@@ -12,7 +12,7 @@
 |--------|--------|---------|-----------|
 | Landing Page | ✅ Completo | - | 100% |
 | Trilha 1 - Fundamentos | ✅ Completo | 8/8 | 100% |
-| Trilha 2 - Intermediário | ⏳ Pendente | 0/8 | 0% |
+| Trilha 2 - Intermediário | ✅ Completo | 8/8 | 100% |
 | Trilha 3 - Avançado | ⏳ Pendente | 0/8 | 0% |
 
 ---
@@ -70,15 +70,15 @@
 ## Trilha 2 - Técnicas Intermediárias (Blue)
 
 ### Páginas
-- [ ] `trilha2/index.html` - Index da trilha
-- [ ] `trilha2/modulo-2-1.html` - Chain of Thought (CoT)
-- [ ] `trilha2/modulo-2-2.html` - Few Shot vs Zero Shot CoT
-- [ ] `trilha2/modulo-2-3.html` - Scaffolding
-- [ ] `trilha2/modulo-2-4.html` - Scaffolding na Prática
-- [ ] `trilha2/modulo-2-5.html` - Tree of Thought (ToT)
-- [ ] `trilha2/modulo-2-6.html` - Self-Reflection
-- [ ] `trilha2/modulo-2-7.html` - Self-Consistency
-- [ ] `trilha2/modulo-2-8.html` - Comparando Técnicas
+- [x] `trilha2/index.html` - Index da trilha com 8 módulos
+- [x] `trilha2/modulo-2-1.html` - Chain of Thought (CoT)
+- [x] `trilha2/modulo-2-2.html` - Few Shot vs Zero Shot CoT
+- [x] `trilha2/modulo-2-3.html` - Scaffolding
+- [x] `trilha2/modulo-2-4.html` - Scaffolding na Prática
+- [x] `trilha2/modulo-2-5.html` - Tree of Thought (ToT)
+- [x] `trilha2/modulo-2-6.html` - Self-Reflection
+- [x] `trilha2/modulo-2-7.html` - Self-Consistency
+- [x] `trilha2/modulo-2-8.html` - Comparando Técnicas
 
 ### Conteúdo Base (do doc/promptintermediario.txt)
 - Chain of Thought prompting

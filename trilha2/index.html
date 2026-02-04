@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trilha 2 - Tecnicas Intermediarias | Prompt Engineering</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <!-- Logo + INEMA.CLUB -->
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Prompt Engineering</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+
+        <!-- Trilhas + Theme Toggle -->
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <!-- Trilha 1 -->
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <!-- Trilha 2 (ativa) -->
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Intermediario</span>
+          </a>
+          <!-- Trilha 3 -->
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">
+        TRILHA 2
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔗 Tecnicas Intermediarias</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Domine Chain of Thought, Scaffolding, Tree of Thought e tecnicas de Self-Reflection.
+        O proximo nivel para prompts realmente eficazes.
+      </p>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">8</div>
+          <div class="text-xs text-neutral-400">Modulos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">48</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">~3h</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Medio</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVEGACAO RAPIDA -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h2 class="text-lg font-semibold mb-4 text-neutral-400">Navegacao Rapida</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <a href="modulo-2-1.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-blue-500/50 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.1</span>
+        <p class="text-sm text-neutral-300 mt-1">Chain of Thought</p>
+      </a>
+      <a href="modulo-2-2.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-blue-500/50 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.2</span>
+        <p class="text-sm text-neutral-300 mt-1">Few vs Zero Shot</p>
+      </a>
+      <a href="modulo-2-3.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-blue-500/50 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.3</span>
+        <p class="text-sm text-neutral-300 mt-1">Scaffolding</p>
+      </a>
+      <a href="modulo-2-4.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-blue-500/50 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.4</span>
+        <p class="text-sm text-neutral-300 mt-1">Scaffolding Pratico</p>
+      </a>
+      <a href="modulo-2-5.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-blue-500/50 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.5</span>
+        <p class="text-sm text-neutral-300 mt-1">Tree of Thought</p>
+      </a>
+      <a href="modulo-2-6.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-blue-500/50 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.6</span>
+        <p class="text-sm text-neutral-300 mt-1">Self-Reflection</p>
+      </a>
+      <a href="modulo-2-7.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-blue-500/50 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.7</span>
+        <p class="text-sm text-neutral-300 mt-1">Self-Consistency</p>
+      </a>
+      <a href="modulo-2-8.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-blue-500/50 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.8</span>
+        <p class="text-sm text-neutral-300 mt-1">Comparando Tecnicas</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- DIVISOR -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="border-t border-dark-600 my-4"></div>
+    <h2 class="text-lg font-semibold text-neutral-400 mb-6">Conteudo Detalhado</h2>
+  </div>
+
+  <!-- MODULOS -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+
+    <!-- MODULO 2.1 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.1</span>
+          <span class="text-xs text-neutral-500">~25 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔗 Chain of Thought (CoT)</h3>
+        <p class="text-neutral-400 text-sm">A tecnica favorita antes dos reasoning models - faca o modelo mostrar seu raciocinio passo a passo.</p>
+      </div>
+
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🧠</span>
+            <div>
+              <span class="font-medium">O que e Chain of Thought</span>
+              <span class="text-neutral-500 text-sm ml-2">- Raciocinio explicito</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Tecnica onde voce pede ao modelo para produzir seu processo de raciocinio passo a passo, em vez de apenas dar a resposta final.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Aumenta drasticamente a precisao em problemas complexos. E a base dos reasoning models modernos.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Show your work | Step by step | Input-output chaining | Prediction refinement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🔄</span>
+            <div>
+              <span class="font-medium">Como Funciona na Pratica</span>
+              <span class="text-neutral-500 text-sm ml-2">- Input-Output encadeado</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">O output de um prompt vira input do proximo. Cada iteracao refina o resultado com mais contexto e derivacoes.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Permite refinar respostas progressivamente, especialmente util quando context windows eram pequenos.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Output1 -> Input2 | Duas derivadas de informacao | Predicao mais informada.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🤖</span>
+            <div>
+              <span class="font-medium">CoT vs Reasoning Models</span>
+              <span class="text-neutral-500 text-sm ml-2">- O que mudou com O1/O3</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Reasoning models como O1, O3 e DeepSeek fazem CoT automaticamente durante o processamento interno.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">O que antes era manual agora e nativo. Mas entender CoT ajuda a usar melhor os reasoning models.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">O3 Mini = Zero-shot CoT instantaneo | O1 Pro = CoT longo (10-15 min) | Self-reflection integrada.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">✅</span>
+            <div>
+              <span class="font-medium">Quando Usar CoT</span>
+              <span class="text-neutral-500 text-sm ml-2">- Casos de uso ideais</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">CoT brilha em: problemas matematicos multi-step, puzzles logicos, lead qualification workflows, enriquecimento de dados.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Saber quando aplicar CoT economiza tempo e melhora resultados em tarefas complexas.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Complex reasoning | Multi-step math | Workflow automation | Word count precision.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">⚠️</span>
+            <div>
+              <span class="font-medium">Armadilhas do Chain Prompting</span>
+              <span class="text-neutral-500 text-sm ml-2">- Evite agentes ADHD</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Encadear muitos agentes com prompts diferentes cria "superficie de falha" crescente. Nao confunda CoT com agent chaining mal feito.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Em producao, agentes ADHD (cada um focado em algo diferente sem continuidade) sao pesadelo de manutencao.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">CoT = aditivo e continuo | Agent chaining = risco de divergencia | Producao != experimentacao.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔧</span>
+            <div>
+              <span class="font-medium">Exercicio: Word Count Precision</span>
+              <span class="text-neutral-500 text-sm ml-2">- Testando CoT vs tradicional</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Exercicio pratico: pedir "100 palavras exatas" para GPT-4o vs O1. Reasoning models usam Python interno para contar.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Demonstra concretamente a diferenca entre modelo tradicional (aproxima) vs reasoning (preciso).</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">GPT-4o = ~95-105 palavras | O1 = 100 exatas | Reasoning interno com codigo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-1.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.2 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.2</span>
+          <span class="text-xs text-neutral-500">~20 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🎯 Few-Shot vs Zero-Shot CoT</h3>
+        <p class="text-neutral-400 text-sm">Quando dar exemplos de raciocinio e quando apenas pedir para pensar passo a passo.</p>
+      </div>
+
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">📚</span>
+            <div>
+              <span class="font-medium">Few-Shot CoT Explicado</span>
+              <span class="text-neutral-500 text-sm ml-2">- Exemplos com raciocinio</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Incluir exemplos completos mostrando pergunta, passos de raciocinio e resposta final no seu prompt.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">O modelo aprende o FORMATO de raciocinio que voce espera, nao apenas o tipo de resposta.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Exemplo: Q + Steps + A | Pattern matching de raciocinio | Consistencia de formato.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">⚡</span>
+            <div>
+              <span class="font-medium">Zero-Shot CoT Explicado</span>
+              <span class="text-neutral-500 text-sm ml-2">- Pense passo a passo</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Simplesmente adicionar "Think step by step" ou "Let's work through this" ao prompt, sem exemplos.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Mais rapido de implementar, funciona bem para tarefas comuns onde o modelo ja conhece o padrao.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Magic phrase | Prompt minimo | O3 Mini = Zero-shot nativo | Rapido mas menos controlado.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">⚖️</span>
+            <div>
+              <span class="font-medium">Comparacao Direta</span>
+              <span class="text-neutral-500 text-sm ml-2">- Quando usar cada um</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Few-shot: quando precisa de formato especifico ou dominio especializado. Zero-shot: tarefas genericas ou com reasoning models.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Escolher errado despertica tokens (few-shot desnecessario) ou perde qualidade (zero-shot insuficiente).</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Dominio especializado = Few-shot | Task generica = Zero-shot | Reasoning model = Zero-shot otimo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">🧮</span>
+            <div>
+              <span class="font-medium">Exemplo: Problema Matematico</span>
+              <span class="text-neutral-500 text-sm ml-2">- 5 macas, come 2</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Few-shot: "Q: John has 5 apples, eats 2. A: John starts with 5, eats 2, 5-2=3. Answer: 3"</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Ver o formato concreto ajuda a criar seus proprios exemplos para dominios especificos.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Mostrar calculo explicito | Formato consistente | Pattern para o modelo seguir.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🧩</span>
+            <div>
+              <span class="font-medium">Exemplo: Riddle Logico</span>
+              <span class="text-neutral-500 text-sm ml-2">- 17 vacas, all but 9</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Riddle: "Farmer has 17 cows, all but 9 die. How many left?" GPT-4o pode errar. Reasoning model acerta explicando a logica.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Demonstra que CoT nao e sobre matematica simples - e sobre raciocinio linguistico e interpretacao.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">"All but 9" = 9 restam | Interpretacao linguistica | Reasoning explicito evita erros.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔧</span>
+            <div>
+              <span class="font-medium">Exercicio Pratico</span>
+              <span class="text-neutral-500 text-sm ml-2">- Compare os dois approaches</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Teste o mesmo problema com Few-shot e Zero-shot. Compare qualidade e consistencia das respostas.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Experiencia pratica mostra quando cada abordagem funciona melhor no seu caso de uso.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Testar ambos | Documentar resultados | Escolher baseado em dados, nao intuicao.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-2.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.3 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.3</span>
+          <span class="text-xs text-neutral-500">~25 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🏗️ Scaffolding</h3>
+        <p class="text-neutral-400 text-sm">Quebre tarefas complexas em passos gerenciaveis - a tecnica de construcao para prompts.</p>
+      </div>
+
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🏗️</span>
+            <div>
+              <span class="font-medium">O que e Scaffolding</span>
+              <span class="text-neutral-500 text-sm ml-2">- Construcao estruturada</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Design de prompt onde voce quebra uma tarefa complexa em passos menores e gerenciaveis, guiando o modelo atraves de cada etapa.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Permite criar outputs longos e complexos (como livros) mesmo com limites de token.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Analogia de construcao | Passos sequenciais | Contexto preservado entre etapas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">📖</span>
+            <div>
+              <span class="font-medium">Case Study: Escrevendo um Livro</span>
+              <span class="text-neutral-500 text-sm ml-2">- O problema do autor famoso</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Historia real: autor famoso contratou para escrever livro com GPT-4 (8K tokens). Scaffolding foi a unica solucao viavel.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Demonstra uso real de scaffolding: outline -> capitulo intro -> middle -> next chapter, preservando contexto.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Outline primeiro | Intro vira contexto | Capitulo por capitulo | Segue entre capitulos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">📝</span>
+            <div>
+              <span class="font-medium">Multi-Prompt Scaffolding</span>
+              <span class="text-neutral-500 text-sm ml-2">- Varios prompts sequenciais</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Prompt 1: outline. Prompt 2: escreva secao A. Prompt 3: escreva secao B. Cada prompt e independente mas conectado.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Mais controle sobre cada etapa, permite correcoes intermediarias, util para workflows de automacao.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Prompts independentes | Output -> Input | N8N/Make.com workflows | Controle granular.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">📄</span>
+            <div>
+              <span class="font-medium">Single-Prompt Scaffolding</span>
+              <span class="text-neutral-500 text-sm ml-2">- Tudo em um prompt estruturado</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">"First, list key points. Then, for each point, provide explanation. Finally, conclude with recommendations."</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Ideal para reasoning models modernos com grande output. O1/O3 executam todo o scaffolding internamente.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">First/Then/Finally | Blob estruturado | Reasoning models | Dados de referencia no final.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🎯</span>
+            <div>
+              <span class="font-medium">Quando Usar Scaffolding</span>
+              <span class="text-neutral-500 text-sm ml-2">- Ideal para tarefas complexas</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Use quando: tarefa complexa demais para one-shot, long-form content, analise multi-parte, outputs estruturados.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Scaffolding reduz "wandering" e alucinacao dividindo o trabalho em tarefas miopicas alcancaveis.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Tarefas miopicas | Atencao focada | Menos alucinacao | Output estruturado.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔧</span>
+            <div>
+              <span class="font-medium">Exercicio: SWOT Analysis</span>
+              <span class="text-neutral-500 text-sm ml-2">- Scaffolding passo a passo</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">1: List strengths. 2: List weaknesses. 3: List opportunities. 4: List threats. 5: Combine into SWOT report.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Exemplo perfeito de scaffolding convergente - cada parte alimenta o output final combinado.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Ordem importa | Strengths -> Weaknesses -> Opportunities -> Threats | Convergencia final.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-3.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULOS 2.4 a 2.8 (Headers) -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.4</span>
+          <span class="text-xs text-neutral-500">~20 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🛠️ Scaffolding na Pratica</h3>
+        <p class="text-neutral-400 text-sm">Exemplos detalhados de multi-turn scaffolding e como preservar contexto entre etapas.</p>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-4.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.5</span>
+          <span class="text-xs text-neutral-500">~25 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🌳 Tree of Thought (ToT)</h3>
+        <p class="text-neutral-400 text-sm">Explore multiplas solucoes ramificadas - a tecnica mais criativa e menos linear.</p>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-5.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.6</span>
+          <span class="text-xs text-neutral-500">~20 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔄 Self-Reflection e Critique</h3>
+        <p class="text-neutral-400 text-sm">Faca o modelo revisar e melhorar sua propria resposta antes de finalizar.</p>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-6.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.7</span>
+          <span class="text-xs text-neutral-500">~15 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🎲 Self-Consistency</h3>
+        <p class="text-neutral-400 text-sm">Gere multiplas respostas e veja se convergem - validacao por consenso.</p>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-7')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-7.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.8</span>
+          <span class="text-xs text-neutral-500">~20 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📊 Comparando Tecnicas</h3>
+        <p class="text-neutral-400 text-sm">Quando usar CoT, Scaffolding, ToT ou Self-Reflection - guia de decisao.</p>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-8')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-8.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- NAVEGACAO -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-12">
+      <a href="../trilha1/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+        ← Trilha Anterior: Fundamentos
+      </a>
+      <a href="../trilha3/index.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+        Proxima Trilha: Avancado →
+      </a>
+    </div>
+
+  </main>
+
+  <!-- MODAIS -->
+  <!-- Modal 2.1 -->
+  <div id="modal-2-1" class="modal hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-900 rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center sticky top-0 bg-dark-900 z-10">
+        <div>
+          <span class="inline-block px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">MODULO 2.1</span>
+          <h2 class="text-xl font-bold mt-1">🔗 Chain of Thought (CoT)</h2>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-3xl leading-none">&times;</button>
+      </div>
+      <div class="p-6">
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">1</span>
+            <h3 class="text-xl font-bold">🧠 O que e Chain of Thought</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Chain of Thought e uma tecnica onde voce pede ao modelo para <strong class="text-blue-400">mostrar seu raciocinio passo a passo</strong> em vez de apenas dar a resposta final.</p>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4 mb-4">
+            <h4 class="text-blue-400 font-semibold mb-2">💡 Tradicional vs CoT</h4>
+            <ul class="text-sm text-neutral-300 space-y-1">
+              <li>• <strong>Tradicional:</strong> Input -> "A resposta e 42"</li>
+              <li>• <strong>CoT:</strong> Input -> "Primeiro calculamos X, depois consideramos Y, portanto 42"</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">2</span>
+            <h3 class="text-xl font-bold">🔄 Como Funciona</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">O output de um prompt vira input do proximo. Voce tem <strong class="text-blue-400">duas derivadas de informacao</strong>: input1, output1, input2, output2.</p>
+          <div class="bg-dark-800 rounded-lg border border-dark-600 p-4">
+            <p class="text-sm text-neutral-400 italic">"Quando o AI tem oportunidade de refletir sobre seu output, a proxima predicao e muito mais informada."</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">3</span>
+            <h3 class="text-xl font-bold">🤖 CoT nos Reasoning Models</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Reasoning models como <strong class="text-blue-400">O1, O3 e DeepSeek</strong> fazem CoT automaticamente internamente.</p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-blue-900/20 rounded-lg border border-blue-500/30 p-3">
+              <h4 class="font-bold text-blue-400 text-sm mb-2">O3 Mini</h4>
+              <p class="text-xs text-neutral-300">Zero-shot CoT instantaneo. Reasoning rapido em segundos.</p>
+            </div>
+            <div class="bg-purple-900/20 rounded-lg border border-purple-500/30 p-3">
+              <h4 class="font-bold text-purple-400 text-sm mb-2">O1 Pro</h4>
+              <p class="text-xs text-neutral-300">CoT extenso. Pode pensar por 10-15 minutos em problemas complexos.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">4</span>
+            <h3 class="text-xl font-bold">✅ Quando Usar CoT</h3>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Math Multi-step</h4>
+              <p class="text-xs text-neutral-400">Problemas com varios calculos</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Puzzles Logicos</h4>
+              <p class="text-xs text-neutral-400">Riddles e raciocinio</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Lead Qualification</h4>
+              <p class="text-xs text-neutral-400">Workflows de enriquecimento</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Word Count</h4>
+              <p class="text-xs text-neutral-400">Precisao em contagem</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">5</span>
+            <h3 class="text-xl font-bold">⚠️ Armadilhas</h3>
+          </div>
+          <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-4">
+            <h4 class="text-red-400 font-semibold mb-2">🚨 Agentes ADHD</h4>
+            <p class="text-neutral-300 text-sm">Encadear muitos agentes diferentes cria "superficie de falha" crescente. CoT deve ser <strong>aditivo e continuo</strong>, nao disperso.</p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">6</span>
+            <h3 class="text-xl font-bold">🔧 Exercicio</h3>
+          </div>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4">
+            <h4 class="text-blue-400 font-semibold mb-2">📝 Word Count Test</h4>
+            <p class="text-neutral-300 text-sm mb-2">Peca "100 palavras exatas" para GPT-4o e O1. Compare os resultados.</p>
+            <p class="text-neutral-300 text-sm"><strong>Esperado:</strong> GPT-4o ~95-105 | O1 = 100 exatas (usa Python interno)</p>
+          </div>
+        </section>
+
+        <div class="flex justify-start space-x-3 pt-4 border-t border-dark-600">
+          <button onclick="closeModal()" class="px-4 py-2 bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Fechar</button>
+          <a href="modulo-2-1.html" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Abrir Pagina Completa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2.2 -->
+  <div id="modal-2-2" class="modal hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-900 rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center sticky top-0 bg-dark-900 z-10">
+        <div>
+          <span class="inline-block px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">MODULO 2.2</span>
+          <h2 class="text-xl font-bold mt-1">🎯 Few-Shot vs Zero-Shot CoT</h2>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-3xl leading-none">&times;</button>
+      </div>
+      <div class="p-6">
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">1</span>
+            <h3 class="text-xl font-bold">📚 Few-Shot CoT</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Inclua exemplos com <strong class="text-blue-400">passos de raciocinio explicitos</strong> no prompt.</p>
+          <div class="bg-dark-800 rounded-lg border border-dark-600 p-4">
+            <p class="text-sm text-neutral-300"><strong>Exemplo:</strong> "Q: John has 5 apples, eats 2. How many left?"</p>
+            <p class="text-sm text-neutral-300 mt-2"><strong>A:</strong> John starts with 5 apples. He eats 2. 5-2=3. <strong class="text-blue-400">Answer: 3</strong></p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">2</span>
+            <h3 class="text-xl font-bold">⚡ Zero-Shot CoT</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Simplesmente adicione <strong class="text-blue-400">"Think step by step"</strong> sem exemplos.</p>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4">
+            <h4 class="text-blue-400 font-semibold mb-2">🪄 Magic Phrases</h4>
+            <ul class="text-sm text-neutral-300 space-y-1">
+              <li>• "Let's think step by step"</li>
+              <li>• "Let's work through this"</li>
+              <li>• "Show your reasoning"</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">3</span>
+            <h3 class="text-xl font-bold">⚖️ Comparacao</h3>
+          </div>
+          <div class="bg-dark-800 rounded-lg border border-dark-600 overflow-hidden">
+            <table class="w-full text-xs">
+              <thead class="bg-dark-700">
+                <tr>
+                  <th class="px-3 py-2 text-left text-blue-400">Aspecto</th>
+                  <th class="px-3 py-2 text-left text-blue-400">Few-Shot</th>
+                  <th class="px-3 py-2 text-left text-blue-400">Zero-Shot</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-dark-600">
+                <tr><td class="px-3 py-2">Tokens</td><td class="px-3 py-2 text-neutral-400">Mais (exemplos)</td><td class="px-3 py-2 text-neutral-400">Menos</td></tr>
+                <tr><td class="px-3 py-2">Controle</td><td class="px-3 py-2 text-neutral-400">Alto</td><td class="px-3 py-2 text-neutral-400">Medio</td></tr>
+                <tr><td class="px-3 py-2">Uso ideal</td><td class="px-3 py-2 text-neutral-400">Dominio especifico</td><td class="px-3 py-2 text-neutral-400">Tasks genericas</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">4</span>
+            <h3 class="text-xl font-bold">🧩 Riddle Test</h3>
+          </div>
+          <div class="bg-primary/10 rounded-xl border border-primary/30 p-4">
+            <p class="text-neutral-300 text-sm mb-2"><strong>Teste:</strong> "Farmer has 17 cows, all but 9 die. How many left?"</p>
+            <p class="text-neutral-300 text-sm">GPT-4o pode errar. Reasoning model explica: "all but 9 = 9 sobram". <strong class="text-primary">Resposta: 9</strong></p>
+          </div>
+        </section>
+
+        <div class="flex justify-start space-x-3 pt-4 border-t border-dark-600">
+          <button onclick="closeModal()" class="px-4 py-2 bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Fechar</button>
+          <a href="modulo-2-2.html" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Abrir Pagina Completa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2.3 -->
+  <div id="modal-2-3" class="modal hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-900 rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center sticky top-0 bg-dark-900 z-10">
+        <div>
+          <span class="inline-block px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">MODULO 2.3</span>
+          <h2 class="text-xl font-bold mt-1">🏗️ Scaffolding</h2>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-3xl leading-none">&times;</button>
+      </div>
+      <div class="p-6">
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">1</span>
+            <h3 class="text-xl font-bold">🏗️ O que e Scaffolding</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Quebre tarefas complexas em <strong class="text-blue-400">passos menores e gerenciaveis</strong>, guiando o modelo atraves de cada etapa.</p>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4">
+            <h4 class="text-blue-400 font-semibold mb-2">🔧 Analogia</h4>
+            <p class="text-sm text-neutral-300">Como andaimes na construcao civil - estrutura temporaria que permite construir algo maior.</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">2</span>
+            <h3 class="text-xl font-bold">📖 Case: Livro com GPT-4</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Autor famoso queria escrever livro com GPT-4 (8K tokens). Scaffolding foi a <strong class="text-blue-400">unica solucao</strong>.</p>
+          <div class="space-y-2">
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <span class="text-blue-400 font-bold text-sm">1.</span> Criar outline completo do livro
+            </div>
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <span class="text-blue-400 font-bold text-sm">2.</span> Escrever intro do capitulo 1
+            </div>
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <span class="text-blue-400 font-bold text-sm">3.</span> Intro vira contexto -> meio do capitulo
+            </div>
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <span class="text-blue-400 font-bold text-sm">4.</span> Repetir para cada capitulo
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">3</span>
+            <h3 class="text-xl font-bold">📝 Multi vs Single Prompt</h3>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-blue-900/20 rounded-lg border border-blue-500/30 p-3">
+              <h4 class="font-bold text-blue-400 text-sm mb-2">Multi-Prompt</h4>
+              <p class="text-xs text-neutral-300">Prompts separados, mais controle, ideal para N8N/Make.</p>
+            </div>
+            <div class="bg-purple-900/20 rounded-lg border border-purple-500/30 p-3">
+              <h4 class="font-bold text-purple-400 text-sm mb-2">Single-Prompt</h4>
+              <p class="text-xs text-neutral-300">"First... Then... Finally..." Ideal para reasoning models.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">4</span>
+            <h3 class="text-xl font-bold">🔧 SWOT Scaffolding</h3>
+          </div>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4">
+            <ol class="text-sm text-neutral-300 space-y-2">
+              <li><strong class="text-blue-400">1.</strong> List strengths of Company X</li>
+              <li><strong class="text-blue-400">2.</strong> List weaknesses</li>
+              <li><strong class="text-blue-400">3.</strong> List opportunities</li>
+              <li><strong class="text-blue-400">4.</strong> List threats</li>
+              <li><strong class="text-blue-400">5.</strong> Combine into full SWOT report</li>
+            </ol>
+          </div>
+        </section>
+
+        <div class="flex justify-start space-x-3 pt-4 border-t border-dark-600">
+          <button onclick="closeModal()" class="px-4 py-2 bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Fechar</button>
+          <a href="modulo-2-3.html" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Abrir Pagina Completa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2.4 -->
+  <div id="modal-2-4" class="modal hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-900 rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center sticky top-0 bg-dark-900 z-10">
+        <div>
+          <span class="inline-block px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">MODULO 2.4</span>
+          <h2 class="text-xl font-bold mt-1">🛠️ Scaffolding na Pratica</h2>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-3xl leading-none">&times;</button>
+      </div>
+      <div class="p-6">
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">1</span>
+            <h3 class="text-xl font-bold">🔄 Multi-Turn Scaffolding</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Lembre o modelo dos <strong class="text-blue-400">key points</strong> em cada turn. Contexto se perde sem isso.</p>
+          <div class="bg-dark-800 rounded-lg border border-dark-600 p-4">
+            <p class="text-sm text-neutral-300 italic">"Continuing the essay on climate change impacts, next discuss impacts on oceans."</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">2</span>
+            <h3 class="text-xl font-bold">📊 Ordem dos Passos</h3>
+          </div>
+          <p class="text-neutral-300 mb-4"><strong class="text-blue-400">A ordem importa!</strong> Strengths antes de Weaknesses permite contraste. Ambos antes de Opportunities.</p>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4">
+            <p class="text-sm text-neutral-300">Sequencia estrategica aumenta a probabilidade de insights relevantes em cada etapa.</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">3</span>
+            <h3 class="text-xl font-bold">🎯 Climate Change Essay</h3>
+          </div>
+          <div class="space-y-2">
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <span class="text-blue-400 font-bold text-sm">Prompt 1:</span> Give me an outline for an essay about climate change
+            </div>
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <span class="text-blue-400 font-bold text-sm">Prompt 2:</span> Write the first section about impacts on agriculture
+            </div>
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <span class="text-blue-400 font-bold text-sm">Prompt 3:</span> Now write the section about impacts on oceans
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">4</span>
+            <h3 class="text-xl font-bold">🔧 Exercicio</h3>
+          </div>
+          <div class="bg-primary/10 rounded-xl border border-primary/30 p-4">
+            <h4 class="text-primary font-semibold mb-2">📝 Business Plan Scaffolding</h4>
+            <p class="text-neutral-300 text-sm">Crie um business plan usando 5 prompts sequenciais: Executive Summary -> Market Analysis -> Product -> Financial -> Conclusion.</p>
+          </div>
+        </section>
+
+        <div class="flex justify-start space-x-3 pt-4 border-t border-dark-600">
+          <button onclick="closeModal()" class="px-4 py-2 bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Fechar</button>
+          <a href="modulo-2-4.html" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Abrir Pagina Completa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2.5 -->
+  <div id="modal-2-5" class="modal hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-900 rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center sticky top-0 bg-dark-900 z-10">
+        <div>
+          <span class="inline-block px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">MODULO 2.5</span>
+          <h2 class="text-xl font-bold mt-1">🌳 Tree of Thought (ToT)</h2>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-3xl leading-none">&times;</button>
+      </div>
+      <div class="p-6">
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">1</span>
+            <h3 class="text-xl font-bold">🌳 O que e Tree of Thought</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Em vez de raciocinio linear (CoT), o modelo <strong class="text-blue-400">explora multiplas solucoes ramificadas</strong> como uma arvore.</p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">CoT</h4>
+              <p class="text-xs text-neutral-300">1 → 2 → 3 (linear)</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-purple-400 font-semibold text-sm mb-1">ToT</h4>
+              <p class="text-xs text-neutral-300">1 → 2A/2B → 3A/3B (ramificado)</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">2</span>
+            <h3 class="text-xl font-bold">🧩 Quando Usar ToT</h3>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Problemas Criativos</h4>
+              <p class="text-xs text-neutral-400">Multiplas solucoes validas</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Puzzles Complexos</h4>
+              <p class="text-xs text-neutral-400">Backtracking necessario</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Planejamento Estrategico</h4>
+              <p class="text-xs text-neutral-400">Cenarios alternativos</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Creative Writing</h4>
+              <p class="text-xs text-neutral-400">Explorar narrativas</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">3</span>
+            <h3 class="text-xl font-bold">🔬 Exemplo: Water Jugs</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">"Voce tem jarros de 3 e 5 galoes. Como medir exatamente 4 galoes?"</p>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4">
+            <p class="text-sm text-neutral-300 mb-2"><strong>Estrategia A:</strong> Encher 5, despejar em 3</p>
+            <p class="text-sm text-neutral-300 mb-2"><strong>Estrategia B:</strong> Encher 3 duas vezes, despejar em 5</p>
+            <p class="text-sm text-neutral-300"><strong>Estrategia C:</strong> Alternar enchimento</p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">4</span>
+            <h3 class="text-xl font-bold">⚠️ Trade-offs</h3>
+          </div>
+          <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-4">
+            <h4 class="text-red-400 font-semibold mb-2">🚨 Complexidade</h4>
+            <p class="text-neutral-300 text-sm">ToT e mais envolvido. Quando algo da errado, e dificil rastrear qual branch falhou. Use apenas quando realmente necessario.</p>
+          </div>
+        </section>
+
+        <div class="flex justify-start space-x-3 pt-4 border-t border-dark-600">
+          <button onclick="closeModal()" class="px-4 py-2 bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Fechar</button>
+          <a href="modulo-2-5.html" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Abrir Pagina Completa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2.6 -->
+  <div id="modal-2-6" class="modal hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-900 rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center sticky top-0 bg-dark-900 z-10">
+        <div>
+          <span class="inline-block px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">MODULO 2.6</span>
+          <h2 class="text-xl font-bold mt-1">🔄 Self-Reflection e Critique</h2>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-3xl leading-none">&times;</button>
+      </div>
+      <div class="p-6">
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">1</span>
+            <h3 class="text-xl font-bold">🔄 O que e Self-Reflection</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Peca ao modelo para <strong class="text-blue-400">revisar e criticar sua propria resposta</strong> antes de finalizar.</p>
+          <div class="bg-dark-800 rounded-lg border border-dark-600 p-4">
+            <p class="text-sm text-neutral-300"><strong>Tradicional:</strong> Pergunta → Resposta</p>
+            <p class="text-sm text-neutral-300 mt-2"><strong>Self-Reflection:</strong> Pergunta → Resposta inicial → Critique → Resposta melhorada</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">2</span>
+            <h3 class="text-xl font-bold">🛠️ Como Usar</h3>
+          </div>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4">
+            <p class="text-sm text-neutral-300 italic mb-2">"Do you spot any mistakes or areas to improve in your answer? Please correct them."</p>
+            <p class="text-sm text-neutral-300 italic">"If you were [persona], how would this read to you?"</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">3</span>
+            <h3 class="text-xl font-bold">📧 Caso: Cold Email</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Gere email → peca para avaliar como o prospect veria → refine baseado na reflexao.</p>
+          <div class="bg-dark-800 rounded-lg border border-dark-600 p-4">
+            <p class="text-sm text-neutral-300 italic">"If you were James Smith from Electric Power Co., how would you want this email to read?"</p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">4</span>
+            <h3 class="text-xl font-bold">⚠️ Cuidado: Overthinking</h3>
+          </div>
+          <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-4">
+            <h4 class="text-red-400 font-semibold mb-2">🚨 Analogia do Exame</h4>
+            <p class="text-neutral-300 text-sm">Ja estudou tanto para uma prova que comecou a racionalizar respostas erradas? Self-reflection em excesso pode causar o mesmo - respostas perfeitas viram "otimizadas" demais.</p>
+          </div>
+        </section>
+
+        <div class="flex justify-start space-x-3 pt-4 border-t border-dark-600">
+          <button onclick="closeModal()" class="px-4 py-2 bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Fechar</button>
+          <a href="modulo-2-6.html" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Abrir Pagina Completa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2.7 -->
+  <div id="modal-2-7" class="modal hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-900 rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center sticky top-0 bg-dark-900 z-10">
+        <div>
+          <span class="inline-block px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">MODULO 2.7</span>
+          <h2 class="text-xl font-bold mt-1">🎲 Self-Consistency</h2>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-3xl leading-none">&times;</button>
+      </div>
+      <div class="p-6">
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">1</span>
+            <h3 class="text-xl font-bold">🎲 O que e Self-Consistency</h3>
+          </div>
+          <p class="text-neutral-300 mb-4">Gere <strong class="text-blue-400">multiplas respostas</strong> e veja se convergem. Escolha a resposta mais comum.</p>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4">
+            <p class="text-sm text-neutral-300">"Run the prompt several times with slight randomness and choose the answer that most outputs converge on."</p>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">2</span>
+            <h3 class="text-xl font-bold">🎯 Quando Usar</h3>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Respostas Criticas</h4>
+              <p class="text-xs text-neutral-400">Quando erro e custoso</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg border border-dark-600 p-3">
+              <h4 class="text-blue-400 font-semibold text-sm mb-1">Validacao</h4>
+              <p class="text-xs text-neutral-400">Confirmar raciocinio</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">3</span>
+            <h3 class="text-xl font-bold">⚠️ Consideracoes</h3>
+          </div>
+          <div class="bg-primary/10 rounded-xl border border-primary/30 p-4">
+            <p class="text-neutral-300 text-sm">Com reasoning models modernos que pensam por varios minutos, self-consistency pode ser <strong class="text-primary">redundante</strong>. Teste se realmente necessario.</p>
+          </div>
+        </section>
+
+        <div class="flex justify-start space-x-3 pt-4 border-t border-dark-600">
+          <button onclick="closeModal()" class="px-4 py-2 bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Fechar</button>
+          <a href="modulo-2-7.html" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Abrir Pagina Completa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2.8 -->
+  <div id="modal-2-8" class="modal hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-900 rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center sticky top-0 bg-dark-900 z-10">
+        <div>
+          <span class="inline-block px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">MODULO 2.8</span>
+          <h2 class="text-xl font-bold mt-1">📊 Comparando Tecnicas</h2>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-3xl leading-none">&times;</button>
+      </div>
+      <div class="p-6">
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">1</span>
+            <h3 class="text-xl font-bold">📊 Tabela Comparativa</h3>
+          </div>
+          <div class="bg-dark-800 rounded-lg border border-dark-600 overflow-hidden">
+            <table class="w-full text-xs">
+              <thead class="bg-dark-700">
+                <tr>
+                  <th class="px-3 py-2 text-left text-blue-400">Tecnica</th>
+                  <th class="px-3 py-2 text-left text-blue-400">Uso Ideal</th>
+                  <th class="px-3 py-2 text-left text-blue-400">Complexidade</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-dark-600">
+                <tr><td class="px-3 py-2">CoT</td><td class="px-3 py-2 text-neutral-400">Raciocinio sequencial</td><td class="px-3 py-2 text-neutral-400">Baixa</td></tr>
+                <tr><td class="px-3 py-2">Scaffolding</td><td class="px-3 py-2 text-neutral-400">Tarefas longas/estruturadas</td><td class="px-3 py-2 text-neutral-400">Media</td></tr>
+                <tr><td class="px-3 py-2">ToT</td><td class="px-3 py-2 text-neutral-400">Problemas criativos</td><td class="px-3 py-2 text-neutral-400">Alta</td></tr>
+                <tr><td class="px-3 py-2">Self-Reflection</td><td class="px-3 py-2 text-neutral-400">Refinamento de output</td><td class="px-3 py-2 text-neutral-400">Media</td></tr>
+                <tr><td class="px-3 py-2">Self-Consistency</td><td class="px-3 py-2 text-neutral-400">Validacao critica</td><td class="px-3 py-2 text-neutral-400">Alta (custo)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">2</span>
+            <h3 class="text-xl font-bold">🎯 Guia de Decisao</h3>
+          </div>
+          <div class="space-y-3">
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <p class="text-sm text-neutral-300"><strong class="text-blue-400">Problema matematico?</strong> → CoT ou Reasoning Model</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <p class="text-sm text-neutral-300"><strong class="text-blue-400">Conteudo longo estruturado?</strong> → Scaffolding</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <p class="text-sm text-neutral-300"><strong class="text-blue-400">Multiplas solucoes validas?</strong> → Tree of Thought</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <p class="text-sm text-neutral-300"><strong class="text-blue-400">Precisa refinar output?</strong> → Self-Reflection</p>
+            </div>
+            <div class="bg-dark-800 rounded-lg p-3 border border-dark-600">
+              <p class="text-sm text-neutral-300"><strong class="text-blue-400">Resposta critica?</strong> → Self-Consistency</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <div class="flex items-center space-x-4 mb-4">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold">3</span>
+            <h3 class="text-xl font-bold">🔮 Com Reasoning Models</h3>
+          </div>
+          <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-4">
+            <p class="text-neutral-300 text-sm">O1, O3, DeepSeek ja fazem CoT e Self-Reflection internamente. Foque em <strong class="text-blue-400">Scaffolding</strong> para estruturar tarefas e <strong class="text-blue-400">ToT</strong> para problemas criativos.</p>
+          </div>
+        </section>
+
+        <div class="flex justify-start space-x-3 pt-4 border-t border-dark-600">
+          <button onclick="closeModal()" class="px-4 py-2 bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Fechar</button>
+          <a href="modulo-2-8.html" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Abrir Pagina Completa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Prompt Engineering Masterclass - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) {
+          exp.classList.remove('active');
+        }
+      });
+
+      explanation.classList.toggle('active');
+    }
+
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.add('hidden');
+      });
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

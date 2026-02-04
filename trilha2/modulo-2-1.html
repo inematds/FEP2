@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.1 - Chain of Thought | Prompt Engineering</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    html:not(.dark) body { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%); }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Prompt Engineering</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Intermediario</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Avancado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../index.html" class="hover:text-blue-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span>/</span>
+      <span class="text-blue-400">Modulo 2.1</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULO 2.1</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔗 Chain of Thought (CoT)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        A tecnica favorita antes dos reasoning models. Faca o modelo mostrar seu raciocinio passo a passo para resultados muito mais precisos.
+      </p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Medio</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Tecnica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🧠 O que e Chain of Thought</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Chain of Thought (CoT) e uma tecnica de prompting onde voce pede ao modelo para <strong class="text-blue-400">produzir seu processo de raciocinio passo a passo</strong>, em vez de simplesmente dar a resposta final. Era a tecnica favorita antes dos reasoning models, e por um bom motivo.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">💡</span> Tradicional vs Chain of Thought
+        </h3>
+        <div class="space-y-4">
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="text-red-400 font-semibold mb-2">Tradicional (Direct Answer)</h4>
+            <p class="text-neutral-300 text-sm">Input: "Qual o significado de 42?" → Output: <strong>"E uma referencia ao Guia do Mochileiro."</strong></p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="text-emerald-400 font-semibold mb-2">Chain of Thought</h4>
+            <p class="text-neutral-300 text-sm">Input: "Qual o significado de 42?" → Output: <strong>"Primeiro, 42 aparece no livro 'Guia do Mochileiro das Galaxias'. Nele, um supercomputador calcula a 'resposta para a vida'. Portanto, 42 e uma referencia cultural a essa obra."</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Por que Funciona
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Quando o modelo "mostra o trabalho", ele nao esta apenas explicando - esta <strong>refinando a predicao</strong>. Cada passo adiciona contexto que influencia o proximo, aumentando dramaticamente a precisao.
+        </p>
+        <p class="text-neutral-300 text-sm italic">
+          "This is not magic, this is methodical - a series of giving clues and hints to maximize the likelihood of getting the result you want."
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🔄 Como Funciona na Pratica</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O mecanismo central do CoT e o <strong class="text-blue-400">encadeamento de input-output</strong>. O output de uma etapa vira input da proxima, criando "derivadas de informacao" que tornam cada predicao mais precisa.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Input 1 + Prompt Inicial</h4>
+            <p class="text-neutral-300 text-sm">Voce envia a pergunta ou tarefa. O modelo gera Output 1 (primeira tentativa).</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Output 1 → Input 2</h4>
+            <p class="text-neutral-300 text-sm">O primeiro output vira contexto. Voce pede: "Refine isso considerando X".</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Output 2 (Refinado)</h4>
+            <p class="text-neutral-300 text-sm">Agora o modelo tem Input 1 + Output 1 + Input 2 para fazer uma predicao muito mais informada.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Insight Chave
+        </h3>
+        <p class="text-neutral-300">
+          Voce esta criando <strong>duas derivadas de informacao</strong>. O Output 2 considera nao apenas sua pergunta original, mas tambem a reflexao do modelo sobre sua primeira resposta. E como dar ao modelo uma segunda chance informada.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🤖 CoT vs Reasoning Models</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Com a chegada de <strong class="text-blue-400">reasoning models</strong> como O1, O3 e DeepSeek, o CoT manual tornou-se menos necessario - mas entende-lo e crucial para usar esses modelos efetivamente.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+          <h4 class="font-bold text-blue-400 mb-4">🚀 O3 Mini</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-blue-400">•</span>
+              <span>Zero-shot CoT instantaneo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-blue-400">•</span>
+              <span>Reasoning em segundos</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-blue-400">•</span>
+              <span>Ideal para tarefas rapidas</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+          <h4 class="font-bold text-purple-400 mb-4">🧠 O1 Pro</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400">•</span>
+              <span>CoT extenso (10-15 minutos)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400">•</span>
+              <span>Multiplas etapas de reasoning</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400">•</span>
+              <span>Problemas super complexos</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+        <h3 class="text-lg font-semibold text-white mb-4">O que mudou?</h3>
+        <p class="text-neutral-300 mb-4">
+          O que antes era <strong>manual</strong> (encadear prompts, pedir reflexao) agora e <strong>nativo</strong>. Quando voce ve "Reasoning..." no O3 Mini, ele esta fazendo CoT internamente.
+        </p>
+        <p class="text-neutral-300 text-sm">
+          Inclusive usa Python interno para tarefas como contagem de palavras - algo que GPT-4o nao faz.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">✅ Quando Usar Chain of Thought</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        CoT brilha em cenarios especificos. Conhecer esses casos de uso ajuda a aplicar a tecnica onde ela realmente faz diferenca.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="text-blue-400 font-semibold mb-3">🧮 Complex Reasoning</h4>
+          <p class="text-neutral-300 text-sm mb-2">Problemas matematicos multi-step, puzzles logicos, riddles.</p>
+          <p class="text-neutral-400 text-xs">Exemplo: "Se o trem sai as 3pm e viaja a 60km/h..."</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="text-blue-400 font-semibold mb-3">🔄 Workflow Automation</h4>
+          <p class="text-neutral-300 text-sm mb-2">Lead qualification, enriquecimento de dados, pipelines.</p>
+          <p class="text-neutral-400 text-xs">Exemplo: Google Sheets → Qualify → Perplexity Research → Enrich</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="text-blue-400 font-semibold mb-3">✅ Double-Checking</h4>
+          <p class="text-neutral-300 text-sm mb-2">Verificacao de resultados, validacao de dados.</p>
+          <p class="text-neutral-400 text-xs">CoT integrado em reasoning models e otimo para isso.</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="text-blue-400 font-semibold mb-3">📊 Word Count Precision</h4>
+          <p class="text-neutral-300 text-sm mb-2">SEO, limites de caracteres, formatacao especifica.</p>
+          <p class="text-neutral-400 text-xs">Reasoning models acertam contagens exatas.</p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center">
+          <span class="mr-2">📈</span> Impacto Real
+        </h3>
+        <p class="text-neutral-300">
+          CoT pode aumentar a precisao de <strong>3x a 6x</strong> em tarefas complexas. Nao e sobre "rezar para funcionar" - e sobre aumentar metodicamente a probabilidade de sucesso.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">⚠️ Armadilhas do Chain Prompting</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        CoT e poderoso, mas ha uma armadilha comum: confundir <strong class="text-blue-400">chain prompting produtivo</strong> com <strong class="text-red-400">agent chaining caotico</strong>.
+      </p>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">🚨</span> O Problema dos "Agentes ADHD"
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Uma tendencia em ferramentas como N8N e Make.com: conectar um modulo de agente a outro, criando "exercitos de AI". Em producao, isso e problematico.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">•</span>
+            <span>Cada agente tem seu proprio prompt, buffer, contexto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">•</span>
+            <span>Superficie de falha/alucinacao cresce exponencialmente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">•</span>
+            <span>Sem continuidade: agentes "ADHD" focam em coisas diferentes</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ CoT Correto</h4>
+          <ul class="space-y-3 text-neutral-300 text-sm">
+            <li>• Prompts sao <strong>aditivos</strong></li>
+            <li>• Contexto de Input 1 presente em Input 2</li>
+            <li>• Continuidade e consistencia</li>
+            <li>• Output converge para objetivo</li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Agent Chaining Ruim</h4>
+          <ul class="space-y-3 text-neutral-300 text-sm">
+            <li>• Agentes independentes em sequencia</li>
+            <li>• Cada um com contexto proprio</li>
+            <li>• "Left, right, center" sem direcao</li>
+            <li>• Dificil debuggar quando falha</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔧 Exercicio: Word Count Precision</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Este exercicio demonstra concretamente a diferenca entre modelos tradicionais e reasoning models quando se trata de precisao.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📝</span> Desafio: 100 Palavras Exatas
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          <strong>Tarefa:</strong> Peca a dois modelos diferentes para escrever um paragrafo com exatamente 100 palavras.
+        </p>
+        <div class="space-y-3">
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <p class="text-neutral-300"><strong>Modelo 1:</strong> GPT-4o (tradicional)</p>
+            <p class="text-neutral-400 text-sm">Prompt: "Write a 100 word paragraph about AI"</p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <p class="text-neutral-300"><strong>Modelo 2:</strong> O1 ou O3 Mini (reasoning)</p>
+            <p class="text-neutral-400 text-sm">Mesmo prompt: "Write a 100 word paragraph about AI"</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Resultado Esperado</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-red-900/20 rounded-lg p-4 border border-red-500/30">
+            <h4 class="text-red-400 font-semibold mb-2">GPT-4o</h4>
+            <p class="text-neutral-300 text-sm">~95-105 palavras</p>
+            <p class="text-neutral-400 text-xs">Aproxima, mas nao acerta exato</p>
+          </div>
+          <div class="bg-emerald-900/20 rounded-lg p-4 border border-emerald-500/30">
+            <h4 class="text-emerald-400 font-semibold mb-2">O1/O3</h4>
+            <p class="text-neutral-300 text-sm">100 palavras exatas</p>
+            <p class="text-neutral-400 text-xs">Usa Python interno para contar</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Por que Isso Importa
+        </h3>
+        <p class="text-neutral-300">
+          Para SEO, limites de caracteres em ads, ou qualquer tarefa com requisitos precisos, a diferenca entre "aproximadamente certo" e "exatamente certo" pode ser crucial. Reasoning models com CoT interno resolvem isso.
+        </p>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">CoT</strong><span class="text-neutral-400"> - Faz o modelo mostrar raciocinio passo a passo</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Encadeamento</strong><span class="text-neutral-400"> - Output vira Input, criando derivadas de informacao</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Reasoning Models</strong><span class="text-neutral-400"> - Fazem CoT automaticamente (O1, O3, DeepSeek)</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div><strong class="text-white">Evite ADHD Agents</strong><span class="text-neutral-400"> - CoT deve ser aditivo e continuo</span></div>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a>
+          <a href="modulo-2-2.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Proximo Modulo →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Prompt Engineering Masterclass - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
