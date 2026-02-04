@@ -1,0 +1,148 @@
+Reverse Meta Prompting + Live Applications
+
+resuma
+
+Reverse Meta Prompting + Live Applications
+
+00:00 Alright, so now that we've learned all the academic stuff It's time to get a little coffee, put on my little hacker glasses and just show you in action how we can use prompting to one learn more prompting to learn how to basically emulate things like your voice or brand voice the way you write emails
+00:18 , etc. And how to do progressive prompt engineering. So I mentioned very briefly met a prompting in the course just because that's probably how you know my stuff and how you've seen my video.
+00:30 is telling the AI to write the product itself. That is a skill that's helped me in every single modality of front-engineering, whether it might be lovable, bolt, chatchy vt, clawed, whatever, irrespective of the task, you typically don't know what you want.
+00:46 You're kind of like a client for a project. You have scope creep. So you think you're asking for X and you realize once you get a response, you actually want Y, Z, and A and B.
+00:57 Because of that tendency, what I love to do is go through the process once that I like to use my voice like you've seen in other videos like to lower the friction between going from what's in my head to what I want to prompt because prompting is just a proxy for how much detail can you pack in that will
+01:15 increase the likelihood that you get the response you're looking for right so if you can use your voice to just go stream of thought or flow of thought that's what I like to do then we give so many details up front that how do you just type it out or try to make it look nice and pretty using one of those
+01:31 acronyms that a lot of creators use, you wouldn't be able to give the LM enough information to do what it needs to do comma well.
+01:38 So instead of blabbing, I'm going to just go on 4.5 here. And I've generated some fake emails. Okay, I'm going to act like I want to do this project myself and I want to make a email drafting responder in make.com or any then okay.
+01:51 So in this case, we have email number one. So interesting automation audit. Next one is a custom GBT solution's inquiry, the next one is AI tool integration for rabbit for prototyping, next one is need help with data strategy for AI implementation, and last one here is request for AI enhanced sales automation
+02:09 insights. Okay, so we have different perspectives. I'm just going to show you what I would do to reverse engineer creating a prompt to sound like me.
+02:17 Because most people will just say, here I want you to sound like me, here are five examples, learn. And like, here's the email that we received and how I responded.
+02:28 That becomes super nuanced. And whether or not that's an email to an external client or an email to someone in your organization or your colleague or your dad, it really doesn't matter.
+02:38 It's just the more nuance you can show in LM, the better without adding too much noise. So let's take this email.
+02:45 I'm going to go into this chat and I'm just going to do free flow of thought prompting. I'm going call this vibe prompting.
+02:52 I'm not a big fan of the vibe coding element, but vibe prompting is probably the most useful skills that you can use.
+02:58 So all right, so I want to create a prompt that will reverse engineer how I write my emails. And I don't want you to actually write the prompt right away.
+03:10 That'll come later. What I want you to do is get ready for a series of emails I'm going to show you one by one.
+03:16 I'm going to show you email. I'm going to show you the response that AI gave me and my feedback for that response.
+03:25 And then over the course of this conversation, later on, I am going to show you real world emails that I want you to come up with the response for.
+03:33 I'll make that very clear. And then I want you to correct your response. And then I want you to keep track of the different things that are changing or being nuanced every single time.
+03:43 So now I'm just telling it, hey, I don't want you to do anything. Just like get ready for the examples I'm about to show you.
+03:50 So let's say in this case, now we can go here. I'm going to take this example email, paste it here.
+04:00 So I'm going to make it clear. And I'm going to say sample received email one. Now, I'm labeling this morsel for you, but for the LN, you don't have to do that.
+04:14 And it's my response, okay? So in this case, let's go back here. Let's go back to the fake response. I came up with using chat GPT, all right.
+04:26 And let's say this is my exemplar response to this question. So now it should look at that, okay, received email.
+04:34 And now we're gonna go through the response. So now it's starting to make observations empirical observations about how I like to respond to emails.
+04:43 I'm ready for now to, okay, there we go, your feedback on AI's enter response. So, now I'm going to give it another example.
+04:51 Let's say, let's give it two or three examples all at once, just to make this process a bit more straightforward.
+04:56 So, I'm going to say, here are two more examples that were we've received. So, there we go. Boom. And here's our respondent to them.
+05:07 And then we'll go back, let's take fake responses two and three, boom. Okay. So what I advise is typically, especially specifically for this email example, I recommend someone to keep a thread open for a week.
+05:26 Imagine you have an intern, right? And they're getting started in your company. Have this chat or thread open for a week and just drop emails, have a generate it, and And then corrected the way you would.
+05:37 You build this amazing IP in this conversation over time that once you go at the very end and you reverse metaprompt, which again in plain English means you say you were a prompt engineer based on all the feedback I gave you in this entire thread and conversation.
+05:53 Come up with a prompt that fully exhibits all the nuances, all the situations that came up and it starts to really capture as a compressed zip file equivalent.
+06:03 all the nuances and details you gave in that conversation which is super powerful and you can't just create using a normal prompt because you don't know your style until you have someone else or in this case something else analyze it and look at it from a third party perspective because the way I write
+06:23 emails to me before I went through this process it seems common sense right you want to be courteous you want to say the whole hope as well you want to try to avoid that cliche, switch something up.
+06:34 As I do more things, I realize that I have very nuanced ways of writing emails or responding things. So here is looking for patterns again in my email responses, the body structure, yada yada yada.
+06:48 And if we go into the fourth example, this time we're gonna do something different. I'm gonna take this and then I'm gonna say, okay, I think you're ready for the real world.
+07:00 So here is how I just received an email on something else. And come up with a response on based on everything you've learned so far, how you'd respond to it.
+07:10 It's now I'm going to give it its first test. And let's see what it comes up with. Alright, so it's going to say, this is one thing that's good tell.
+07:21 So I write using dashes a lot. Sometimes too much. Then what I can do here is I can take this and say it wasn't bad overall, but I do have feedback.
+07:33 So I want to show you what I would change and I'm going to show you the new and improved version of your email.
+07:38 So learn and understand what changed. So now I'm telling it as the intern, now let me just audit this, you're absolutely right to focus on your foundation first, especially when it comes to optimizing, okay, I'm going Let me say that's to AI.
+07:52 I'd love to understand your specific data challenges that are there over a call, and I'll say like, assuming that goes well, we can outline clear stuff.
+08:07 So I'm, I'm humanizing this email. What, here I'll be procedural. When would you be available? When would you be available?
+08:19 Assumptive close. If I send this, now it's going to try to analyze rather the disparity between the delta. So you'll see here what you kept, opening a acknowledgement, all right.
+08:32 Looking forward to connecting what you adjusted. You shorten the sentence from, especially when it comes to optimizing sales, you remove the explanation and sales and reporting.
+08:46 And it's spend a week and spend what's it called your valuable time watch me do this for a week and then I want to really draft my next response.
+08:56 This is like a small quality of life thing that I know most people don't do. They go and grab a coffee every single time.
+09:02 I like to just prep the next prompt while I'm waiting for the response. Okay, so you did a good job at analyzing the Delta here.
+09:08 Thank you for doing that. I want you now to go through the entire conversation we've had so far from the examples and ideal examples from the feedback I've provided you based on our last interaction.
+09:21 And I want you to act as a world-class prompt engineer. And the goal is that you create a prompt in unformatted markdown in a code block so I can ease the copy-paste it in a way that it captures all the nuances of how I like to write, how I like to respond, and how my response changes depending on the
+09:39 scope of the ask or the incoming email that I receive. So in this case, again, if I type this out, I start crying, but we don't have to cry and we don't have to worry about being grammatically amazing.
+09:50 So it's going to start writing this out. You are an email expert assistant to task crafting professional yet conversational emails on behalf of Mark, who specialize in Genie I.
+10:02 Your response is most precisely mirror Mark's distinctive style, the idea, the idea, the and now it's going to go through and break down what it's observed but in a way that is hyper compressed for a prompt.
+10:14 And you can see here it's going first tone of voice and email structure. And what's cool here is it's smart enough to know that it does multi-shot prompting.
+10:23 This is technically a multi-shot where it provides an example. Thanks for reaching out and great to hear from you. Next one.
+10:30 Great to hear from you. Glad my work caught your attention. Next one. You're spot on with the robust data foundation.
+10:38 Custom GVT solutions make a huge difference in streamlining your customer inquiries. Now, obviously this sounds like very robotic, but you can see, without me telling it, it knows that the best way to write a prompt to convey my style is to provide different scenarios, different sections, and most importantly
+10:56 , different examples to support those sections. So I was gonna keep going here, and this is my favorite part. nuance considerations critical always explicitly suggest digging deeper or discussing deeper specifics during a call avoid ambiguity you'll notice here I made that one change above where I didn't
+11:15 just say like would you like to talk on a call when would you look for a call next is always use friendly conditional statements now this is an example here of the power of metaprompting because I don't necessarily have a PhD in English to know that I use friendly conditional statements assuming that
+11:35 goes well. For me, you wouldn't even know to put your finger on that that's the thing that you do. Let alone have the worst or articulate what that is.
+11:44 So it's really good at coming up with that. And then it comes up with this task finally. And then it says basically when provided with an incoming requesting information, collaboration, consultation, and or advice related to Mark's expertise.
+11:58 And now it goes through all my expertise. Now obviously it understands from the memory also in my chat to BT of what I do and what Prompt Advisor does.
+12:06 And this one is a really good way where now we can copy it, use it in a custom GBT, a cloud project, et cetera.
+12:13 But wait, just because we're done here, doesn't mean we are fully done. If we go back into the real world, right?
+12:20 And it starts not hallucinating, But underperforming on types of emails we didn't account for week. What I like to do is I like to just label this chat Let's say go here.
+12:31 Let me just refer. Yeah, I don't think this will affect anything else So I'm just gonna say Email I have to call them intern email intern chat.
+12:43 So that's how I know I'm trying to train my email So now if I ever need to come back now that the context had switched in the conversation to Generate a response for me to now generate a prompt for me.
+12:55 I can now come to and say hey I just got this email from Rick. Here's the email Here's how you responded based on this prompt and here's how I would have responded and then it will start adjusting and fine-tuning That prompt and give it like three days a week You'll have a really exceptional prompt that
+13:14 you didn't really put together all you did is just set the stage For providing the live feedbacks back and forth So it can be very powerful and highly recommend you taking into consideration.
+13:25 So that is step numo numero urtel rather. And now for the next one, what we're going to do is I'm going to show you how you can take any model that comes out and learn how to prompt it, even at least mediocre early.
+13:39 Until my video comes out, until I go mad scientist mode with the sunnies and try to figure it out. So let's close this.
+13:46 And let's assume we have a blank chativity 4o, and I'm going to use 4o because it's faster, although, you know what, I'll use O3 Mini because we do need reasoning to help us learn certain prompting techniques.
+14:04 So as of this recording, today I think Lama 4 came out. So what I would do here is I would typically use deep research, but I don't want you to wait seven days.
+14:14 So I'll use pro and I'll do the following. So let's assume we want to learn how to prompt the new llama for model.
+14:21 Okay. And we don't want to necessarily learn how to do that the hard way or wait for Mark's video that takes way too long to come up.
+14:27 So let's go here and we say okay. So I want you to do some deep research about this new model that came out or new family of models that came out from meta called llama for.
+14:38 I have no idea how to prompt it. I have no idea what the differences are or nuances that are between prompting it against Lama 3, let alone how it differs to how I should approach the prompts from OpenAI 4.0 or OpenAI reasoning models or Cloud 2.7sonnet or Cloud 2.5sonnet.
+14:56 So I want you to do a full Delta comparison and come back to me with a report on how I should prompt this model with ideally examples on how to prompt it based on all your research and everything you find.
+15:07 So, I'm now showing you behind the curtains of how I like to expedite my discovery. Now, while this is doing its thing, I'll just like show you an example here.
+15:20 I also, from a discovery standpoint, in this case, I'll go on Jan LeCoon's page. She's a VP and Chief Scientist, Ahmedda, and typically he will post about anything big like this.
+15:32 You can see. There we go. So show all posts. And there's one particular post that came out. I think it's one of these.
+15:43 There we go. So boom. Lama4Brute is out. And in this case, someone else is posting about the model. And then typically they have some form of studies to go along with this.
+15:55 So if I click on this And we go to llama.com, what you can do is obviously download the models, but you can look at their research, their underlying papers around how this was designed.
+16:16 And although it's boring to read a paper, you can just give it to an LLM and have that figure it out.
+16:20 But that's just a little bit of an aside, I like to go deep on my personal deep research to make sure that I cover my bases in terms of understanding these models.
+16:28 So now we get some form of summary on how to prompt them. It talks about how it's designed because it's able to go and search not just different new sites, but it was actually able to go and crawl, probably, their studies and sources.
+16:42 It's going over the performance. And now it starts putting together some sample prompting best practices. So basic prompt structure, Lama uses a conversation structure, Similar to other chat models.
+16:54 So now it's giving you a template. Lama 4 is a highly steerable or rather highly steerable through effective system prompts.
+17:03 I recommend a template and here you go. One thing I notice immediately is it's all one text blob which a lot of transformers typically like as a format.
+17:14 This whole like double enter and then hashtag thing over time. We can very specialized to open AI I would say and then eventually cloud as well with XML tags, and you can see here it goes a little bit of the technical stuff.
+17:26 It tells you the key differences between the other models compared to GBT, all right. So now what I can do is take this whole thing.
+17:38 And obviously OpenEI has no understanding that I think Lama even Lama 3 came out, let alone Lama 4 because the training is still as of 2023.
+17:47 Obviously, could we use search here to supplement it? Absolutely. But I just like to use perplexity because it's a bit faster.
+17:55 And it doesn't bloat the conversation. One thing about using new chat sessions is you're technically starting a virgin chat. It's a blank slate.
+18:04 It has no contact switching or any weird nuances or I would say litter from prior conversation that might change the result you receive.
+18:14 All right, so I want you to come up with a amazing prompt or amazing set of prompts for different paths for business use cases that you come up with.
+18:24 There's a small that you've never heard of or never seen it's called Lama 4. I'm gonna give you a bit of a study guide and cheat sheet as to how it works, but I want you to use that to extrapolate how to create proper prompts for very common business use cases.
+18:39 And I want you to create them in Markdown in a code block in a way that is very easy for anyone to manipulate and understand and ideally go the extra mile and put some variable tags within the prompt and at the very bottom of the prompt that make those prompts easy to customize and easy to change and
+18:56 evaluate. So now I'm going to paste all that perplexity info study guide and then I'll put it in quotes boom.
+19:08 And then because we're using O3 mini high, this will make life a bit easier. So let's go through that. It's going to take its time.
+19:17 And obviously what you can do is go level deeper and say, show me side by side how you'd prompt creating a rag system prompt for Lama for Versus, quad to what's that I saw?
+19:40 No idea what I'm typing. I think it's because I actually have no idea what I'm trying to write. Versus OpenAI 03 Mini High.
+19:50 Come up with a sample prompt optimized for each of these LLMs. So this case, I like to multitask. So while While that one's cranking out, I'm trying to provide some more detail here to feed it as fodder back into that feedback loop to keep making the prompt as effective as possible.
+20:12 So this one is pretty much done. So one thing I'm noticing here is it looks ugly in terms of the formatting.
+20:20 So I'll say your formatting is like inside code blocks and outside code blocks. Can you please make sure you output it in unformatted code blocks so we don't have like spillover between plain text on the canvas versus an actual code block, it looks really messy.
+20:36 I'm a bit sassy today, but in general, you'll see here, if we go back, Lama 4. So one thing immediately I notice is it's recommending that we have way more context with Lama 4 than O3 Mini High and T17s on it.
+20:51 Which makes sense, because at least the Lama 4 models released as of this specific recording are not reasoning models. They're still the old world models, so it can benefit for more handholding.
+21:03 And you can see the structure here. It's expecting an interesting structure. Seems like it likes these cis tags versus clawed and opening eye.
+21:14 You can use the natural language context to use your question assistant. And then it goes through key differences, uses This is XML-like tags for system prompt and context, emphasizing grounding in provided information.
+21:28 That's one thing that I wouldn't have known unless I went and trialled it out, and most times when people say on YouTube go and trial different models because they're such game changes and they change everything every day, they prompt it in a ways that don't necessarily evaluate how good or not good 
+21:47 it is because you have to know how to speak to the certain type of AI before you can evaluate whether or not to do a good job because 99.900% of the time it's a skill issue on your part if you're getting really bad results with the model that's apparently way better.
+22:01 Now realistically this is more of a side side quest. When you see all these benchmarks that every single model surpassing just know that this is a PR marketing game as well.
+22:13 You can can fine tune a model to be exceptional at a certain benchmark, let's say the IQ benchmark or the how good are you at passing the logs out, right?
+22:24 You can fine tune a model on law specifically to make sure that you can reach that benchmark. So always, always, always italics underline bold, take performance with a grain of salt.
+22:37 The only performance that matters is the one that is observed empirically. So, that's a bit of a nugget for it later.
+22:45 So in this case, now we have finally the templates. And to me, this tells you right away, this is a very ugly way to prompt.
+22:53 And I would probably never write this using just my own fingers. I would get AI to run it for me.
+22:58 Okay, that's all good. And what I would do next here is, let's say I wanna make a custom GBT or a chat to GBT project.
+23:05 So I don't have to worry about doing this again. And I just worry about prompting a natural language using my lazy voice, and then getting it through the rest of the work.
+23:14 So in this case, I'll say, okay, this is great in terms of examples. I want you to put together an instructive prompt that I can use to basically create a custom GBT or an AI agent that will always remember one that anytime I give it an instruction natural language or layman's terms, it will go and optimize
+23:34 it for this specific model. And I want you to integrate all of these templates verbatim into this prompt as well So it's gonna be one mega prompt and again, make sure you output it in unformatted markdown in a code block So it's easy to copy paste and make sure there's no spillover whatsoever because
+23:50 I want to paste this right away. I'm a bit of rush I like to add that little last part. So it stops Underthinking try and overthink and inner hurry So now it's gonna create that and then we should be in a good place there What else can I ask here is I would say can you do some research to see like what
+24:11 happens if I don't use the XML tags? Are they just better for performance or is it a maker break? That's one question that I always think about because with markdown, with XML, with all these little formatting techniques, you typically get a lift in performance, but I want to know is that a 1% lift, 
+24:30 5% lift, or is it Critical like you're gonna get suboptimal results without doing this. So that's a core question. I want to ask there so So now it's giving me information about g.5 turbo, which is a basic model No, I think it went off the rails, but this is the question I would ask specifically for 
+24:52 llama 4 I think it treated this question as an individual mutually exclusive question. So I'm glad that came up just so you can see that.
+25:00 But that's the next level I'd go from there. Now, once you have this, notice by the way the word that I used before was an instructive prompt.
+25:08 The reason why I didn't just say prompt is sometimes when you say prompt, it will word it as if you just want to generate something with it, versus wording it in a way that you want to use it to create an AI agent.
+25:19 So this case, you are a customized AI agent, optimize for a Lama 4 business tasks, your primary role is to take instruction provided in natural language, layman terms, and convert it into an optimized prompt structured for the Lama 4 model, always analyze the user's request and determine which of the
+25:37 following business use cases is the most appropriate. And we go through here. When a user provides instruction, proceed as follows.
+25:46 So you'll see right here, if we go to this section, We got interpret, national language request, map the request, it's just a message that sets the context, so that's important.
+25:58 There we go. User message that specifies with clear variable tags. I think this is all good as well. And then the most important things that we're providing at this template here.
+26:10 So, if we were to take this, copy this, let's just open a brand new custom GPT real quick, simulating as if let's take one of these here.
+26:22 I'm just going to repurpose and existing GPT. All right, and I say something like write me a prompt to create newsletters.
+26:43 So it should simulate based on this new prompt. So let me make sure that this is saved. Make sure it's optimized for Lama for per EOR instructions.
+27:11 Now one thing is, I don't know if it's actually applying this. Pre-digit. So let me just update this just so that it's full proof.
+27:23 I'll try this again. Okay, a few GPT. All right, I want you to put together a prompt using all the templates you have air disposal to create a prompt that will help me crank out newsletters and an assuming that we're not having some weird hallucinations stuff.
+27:51 Okay, okay, there we go. So I think it just wasn't applying before. but now it's applying the result and we have all the structure here beginning of tag start header system yadi yadi and notice here we have variable tags so it's smart enough to know that we also want to be able to manipulate this prompt
+28:14 pretty easily and how you could do that is obviously take the name of the variable and put it at the very bottom of your screen and just say this is equal two, they received a shoe in the box instead of a stone, whatever.
+28:33 So you'd give it that as a variable at the very bottom of the prompt, because we have a recency bias from the very beginning and very end of the prompt.
+28:40 This would help you a lot with understanding how to actually go the next step and this can manipulate this on the fly.
+28:46 So that is a useful technique and this is how you can learn to prompt these bazillion new models that come out pretty instantly without not necessarily waiting for me to come in or me to chime in to actually do that for you.

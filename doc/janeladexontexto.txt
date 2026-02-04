@@ -1,0 +1,210 @@
+resuma
+
+Mastering Context Windows and Sensitivity
+
+00:00 Alright, and we're back, and now we're talking about specifically context windows insensitivity. Hopefully I spelled that one right, I think I did.
+00:08 So, and I have any little tool here that we can use for the need to, which is this little pointy thing.
+00:12 And let me just pull that up. There you go, woop, try that. Woop, so we can start doing this now.
+00:18 In case I need it, so we're just gonna remove that. And overall, we're gonna go over the context window limits and what's called lost in the middle, which is actually a very important concept.
+00:27 So issue, LMS have a fixed contact window, context rather. So you have some cases where you have a small context window.
+00:37 Really good examples are the non-paid models. So a lot of open source models, let's say the older ones as well, or even like the recent ones don't really have the largest context window, or even if they do have a large context window, they struggle to be able to pay attention to your input as well as
+00:56 the paid ones. So, in general, if I'm smooth with my Met, I self-attached here. Main problem is that, if you have a very large context window, let's say we take Gemini Pro, which as of this recording is around a million tokens.
+01:10 When it becomes two, three million tokens, yes, you can give it three, four books. But it's ability to pay, quote, unquote, attention to different parts of those books relative to your request and then predict and create a probability of what the output tokens should be becomes more and more mitigated
+01:28 . So to me, this is a very helpful analogy. Hopefully it is to you, like it is to me. Imagine you're talking about a credit score.
+01:35 So with a credit score, there are different parts of it that help you improve your credit score or increase that credit score.
+01:43 One of them is called credit utilization, meaning if you have $50,000 credit. You can use up to $49,999. You can totally do that.
+01:54 But then you have a very high utilization. And because of that high utilization, it puts you at risk for missing payments or being illiquid.
+02:02 So your credit score starts to go down. Right. So if you don't add more credit or get a new credit card, they're not approved for it.
+02:08 That's your denominator. Use that same analogy when it comes to context window. Just because you have it, doesn't mean you should use it.
+02:18 So if you have a million tokens in Gemini, it does not mean that if you put a million things in there, it will, so our million tokens worth of information that you're gonna drive accurate results.
+02:28 If anything, you should actually use it for the opposite. So typically you should try to apply for credit or get credit.
+02:34 So you have a very high denominator. Let's say you have half a million dollars in credit. And if you have credit cards and you have a loan, we actually don't use any of it.
+02:43 So, the hack there, and I'm giving you financial advice, but I'm not a financial advice person, so don't take this all with a grain of salt, as you had half a million dollars in credit, and you used a thousand dollars on a credit card to buy yourself, I don't know, a shopping spree, right?
+03:00 You're only using 0.00, 0.00, insert, whatever that number would be, of that credit limit. So your utilization is so small and you're on time, hopefully with that thousand dollars out of the half a million.
+03:10 in, so it's working really well. Same thing with the context window. If you have a million, that just means that, you know, if you did upload that one book, ideally you focused it on half a chapter or two three chapters that are super relevant, it'll just be that much better at being hyper accurate.
+03:29 So just because you can use a million tokens doesn't mean that you should use those million tokens to max that capacity.
+03:35 So just gives you the ability to really mitigate this loss in the middle logic, which basically needs that a part of the actual middle of your instruction, or the middle of the actual context you're giving it, gets ignored.
+03:48 It doesn't know how to pay attention to those four or five kids, like I mentioned before, in the prior analogy.
+03:55 So different ways to mitigate this, from a technical standpoint, is chunking and summarization. So if you're building something like a rag app, or you wanna upload some form of document to add in, that gets logged into SuperBase or Pine Cone, you want to break long input into smaller chunks that fit 
+04:10 the model's context window. Then you want to summarize or extract key points from each chunk, then feed those summaries to the final prompt, and then the next part here is to analyze a 50-page report.
+04:22 Ideally, you don't just dump that 50-page report. A lot of companies we deal with or work with, they love dumping things.
+04:29 They love setting up a ChatGVD Teams account and dumping 5 PDFs and saying go. And while that can work, it's especially with raising miles once in a while, it's not consistent.
+04:39 The best thing is to only feed it what it needs. So when it comes to this, the most important thing is you wanna create summary files, super helpful.
+04:48 It's kinda like having FAQ files for different documents for a chatbot. So in this case, when it comes to combined summary, very important, you take that into account.
+04:58 And for important information, Here's another example, it doesn't hurt to reiterate things. So right now, a prompt will pay attention the most to what's at the very beginning, whether the very end, and then sometimes within the middle, depending on the model we're talking about.
+05:14 But if you want to do disclaimers, I like to do a disclaimer at the very end of the prompt here.
+05:19 So you can say, note, the most important factor in our x, y, and z. So if we take this approach, if you make it the very last thing that the prompt sees, you have this recency bias work in your favor because the last thing that it saw, so now when it's running that prediction, it's looking at what it
+05:37 paid attention to in that prompt, it now has more of a cheat sheet as to what it should really pay attention to if it didn't really gather it from the beginning of your problems in the middle of the prompt.
+05:46 So there's nothing wrong with repeating yourself so long as it's really important. All right, a few other different strategies here are to use headings or structured format.
+05:56 like I said before, this is a lot more effective with non-reasoning models. Reasoning models, some of them, like 3.7 on it, from what I read.
+06:06 It's still benefits from having what are called XML tags. And if you don't know what XML is, let me see if I can use my new tool here.
+06:12 There we go. Ooh, la-la. So let me do remove these little things right there. And then XML looks like this.
+06:20 So you'd have tag, it would say something like header, excuse my horrific computer penmanship, you'd have another one that is like title, you'd see this a lot on a website, so this is xml tags.
+06:40 It does benefit from this kind of demarcation, but in general, the reasoning models don't really need it as much. Next is you I want to leverage context, large context models, like I said, Gemini Pro 2.5 as of this recording has the most input tokens that you can actually put in.
+07:00 Will this change over time? Yes. Why are companies avoiding doing it? One, compute, very expensive to load five books for five million people around the world for GBT's that hundreds of millions of users, right?
+07:13 And next is with context windows, still try to structure the prompt well. One thing I try to do, I did have a video on this months ago.
+07:21 I think it's now six months or seven months ago called prompt compression There's a technical way to do that But if you're ever worried about whether or not a prompt is, excuse me, bloated What I like to do is go into GPT if I can pull that up Well, when you just see if I can pull it up on my other screen
+07:39 here chat GPT All right, and then if we bring that over here And if we go to a model, usually I like to use something like Pro or anything that's an O model.
+07:52 So if we pick one of this, this, this, or this, if you have access to the Pro account, you'll have access to this.
+07:59 I'll just use this one for now. So in this case, let's just do a one and you give it some prompt, just say, act as a professional prompt engineer, remove all the bloat in this prompt and compress it without compromising the underlying instructions or content.
+08:24 That is vital for its success. Okay, insert prompt here, insert prompt, I'll put in quotes. Okay, and then And it will give you a reduced or boiled down version of the prompt you put together, which will help you a lot, especially when it comes to understanding how to provide it with something that's
+08:48 lean enough that it can run with it and get to the same outcome just with the way less probability of hallucination.
+08:55 So that's this part. And last thing here is providing the context usage. So after getting an answer, explicitly ask the model to check if it's using information from that context.
+09:04 So this, if we look at the example here, right here, so if we take, right, this one, did you use information from the entire context, consider if something in the middle of the document was relevant, this is another tactic to use what we looked at before, which is self-reflection.
+09:23 So now you're pushing that reasoning model to just introspect, to go back through the context to see, did it not pay attention to something that it should have?
+09:30 So that's one little trick there. That'll be super helpful. All right. Now a practical example is you have a 5,000 word company policy and then you ask a question and about a detail mentioned in the middle of the text.
+09:46 We call this needle in the haystack logic for the literal analogy that if you put a needle in a haystack, it's really hard to find.
+09:53 same thing with language models, they struggle with finding very small pieces of information and very vast amounts of data. Gemini is known to be one of the best at this specific metric, so that's one thing to put in your back pocket.
+10:11 Opening eye struggles a lot with this exact thing and cloud is mediocre as of today's recording. Now solutions here, break the document down to smaller sections, that's numero uno, numero dose is referred to the section about data privacy.
+10:26 So provide explicit cues, so tell it, hey, look, there's a header in the document that looks like this. If associated probably near on page 20 to 21, and you give it some extra hints to go off of.
+10:37 The last one here is restate key information, like we said, paste key sentence from the middle, now answer my question again.
+10:45 So you can be explicit and spoon feed it. What it sure referred to as well. So this is less convenient, but it's totally doable.
+10:54 Now when it comes to prompt sensitivity, when I say sensitivity is what are high leverage changes you can make that can alter your response quite a bit.
+11:05 So in this case, if we take a look at prompt inputs, all right, let's go back. Let's do this. There we go.
+11:14 So we have, tell me about AI ethics, prompt inputs, and then you get some academic style response. Next is explain AI ethics to me.
+11:23 And then if you say this way explain that's a trigger word. And things that explain is it's going to take on the hat of a teacher.
+11:29 So it's going to do a tutorial style explanation. Okay. Next, what are the ethics of AI? Now this is more of a question and answer where you're probably going to get attacked with a bunch of bullets, which is why you get a list of ethical principles.
+11:42 So this is where Chatsubt and Thropic will go full bullet mode on you. And last one here, AI ethics and overview.
+11:50 Now, this sounds like a YouTube video. But what you should get is also similar to what are the ethics bullet point summary.
+11:56 So if you just say this, it's going to assume the actually meant this. Alright, so that's going to be helpful as well.
+12:02 So this is the whole point. This is that very small nuance changes in prompts lead to very different outcomes. So that's number one.
+12:10 Let's renew these things here. So mitigation strategies, we have different ones. So we have prompt testing. So testing different types of prompts, that's what we do a lot for clients.
+12:22 So typically I'll take five to 10 variations of a prompt, hit it with different temperatures. If you don't know what that is, we'll go over it.
+12:29 We hit it with different top P, very similar to temperature. And we hit it with different tiers of a model family.
+12:36 So if we're using CloudSonic, we'll do with 3.7, 3.5, high-coup, 3.5, normal high-coup, all high-coup, opus, and it kind of go through on different temperatures and see what kind of performance changes are we getting with very small changes in the model, etc.
+12:53 And one of the reasons we do this is for what's called prompt drift, because as these models change over time, so will the performance and the output of said models.
+13:04 So ideally, the best case scenario is I don't have too much crazy discrepancy between this model family for this specific type of prompt because if we can make it as evergreen as possible even though we will have to do some rework six months from now guaranteed by the way especially if you're not using
+13:21 an open source model where it's frozen in time what the version looks like and how it performs and the personality you're gonna have to change your prompt over time so just because it works today doesn't mean it's not gonna work in the future The more evergreen you can make it, the less worker you're
+13:37 going to have to do, and the less what we call technical debt, or in this case prompt engineering debt that you're going to carry over.
+13:43 So that's prompt testing. Next ones are pretty straightforward and understandable, so be specific. Have a consistent format. This is super helpful if you're mindful of what kind of models you're using, are you using 4.0 and 4.5?
+13:56 Or are you intentional about using reasonably models? This typically gets not blown out of proportion, but this decision is not that deep of a decision.
+14:07 It's worth a question of cost. Reasoning models cost money. They're not predictable in terms of the amount of latency they have when you're on the request via API.
+14:16 So if you use O3 Mini from OpenAI, you have low intelligence mode, you have medium intelligence mode, you're high intelligence mode.
+14:23 In none of these comma yet, can you control how much time it actually quote unquote, thanks for? So, whether it's 15 seconds or a minute, if you have a response you're waiting for for like a UI or an app, and you're using O3, it's risky because you don't know if you're getting that response in 15 seconds
+14:41 in one minute, you don't want any form of API to time out on you. So, I would, in most applications, not use reading models unless it's like a workflow automation, where it's small enough or compact enough that if it changes or need to change it, it's a few different clicks away.
+15:00 Next ones are system instructions, so set out over arching or behavioral guidelines, temperature control, so typically we want to use anything from 0.2 to 0.5 for consistent outputs.
+15:12 And last thing is consistency checks here, which relates to prompt testing here. So that is some different strategies you can employ.
+15:22 Now I mentioned temperature, and I mentioned top P. Temperature is a proxy for creativity, so most people, especially other creators that didn't go to school to learn the stuff, will just say it's a proxy for how like creative it can be.
+15:37 Now, is there some merit to that? Yes. Is that actually what it means mathematically? No. It is actually a proxy for tokens selection.
+15:48 So what does that mean So, I would say the dog was running in the field and blank, right? Possible words are barked, pooped.
+16:01 Very common to activities of a dog in a field, right? Very unlikely that it would be, I don't know, pulled out their bank account or bank app and they made an e-transfer tomorrow, right?
+16:15 very little likelihood tokens to be associated with that. So if you set temperature to something like zero, yes, you're getting full rigidity because it's going to stick to tokens that are usually hyper correlated with all the words in the sequence of that sentence, again, positionally paying attention
+16:33 to those words positionally in that sentence. So it will be more quote unquote, rigid. If you lax it, if you go to like one or in some LMs, you can go up like two creativity.
+16:45 It just gives the model no leash pun intended so that it can pick more adventurous words, right? So that it's not over indexing the most common words.
+16:58 So something that happened recently is that Claude, actually, if I go back here, just remove this, there we go. Claude came up with this new infrastructure to train its models to not think so formulaically, or not just always pick the most common or the highest confident words.
+17:20 Try to like be more creative in the actual creativity says to pick tokens that might add some more oomph or the amount adds a more novelty to a sentence.
+17:30 So we are evolving even from this temperature concept, where it's not just about now zero to one, it's going to be the actual model itself will be slightly more creative anyway, and this will just expand that creativity or control that creativity even more.
+17:46 So that's good. Yeah. All right, so examples of where you want to use, low temperature is cogeneration, factual Q&A, logical problems.
+17:57 And then when it comes to medium, general content, balanced responses. So this is good if you want to do emails, content, copy, anything like that, useful to have between 0.5 and 0.8.
+18:09 And finally, it comes to high. We have from 1 to 2.0. It's good for brainstorming, creativity, and poetry and art, especially, say this one, is you'd want to max out, you know, if you want to say haiku, right now haiku, then it's going to use tokens that are more flamboyant or not necessarily associated
+18:29 in the same sentence. And then you can get some really interesting results here, especially by the way, if you alluded to one of the methods I showed you before, which is tree of thought, where you not just go down the beaten path or linear thinking, you go some non-linear, if you combine a temperature
+18:47 of one to two with creativity and tree of thought which is already inherently structurally creative, you can get some very interesting recommendations, results, etc.
+18:58 But that's purely experimental, not something that myself or my team would necessarily put into production. Green of salt obviously. Now when it comes to prom sensitivity part three, we talked about temperature.
+19:10 This is a little diagram to show you. Low temperature deterministic. So more likely to choose high probability tokens than high temperature.
+19:18 It's basically like randomness, right? And if we go to top P, top P, for the most part, don't use it I would say.
+19:29 It's related to temperature, but with top P, there's really commonly used words. and top P is like highly associated words at a different level mathematically.
+19:42 Typically you don't want to play with top P and temperature, just play with temperature. I'm trying to be vague because if I explain this, this will become confusing with temperature.
+19:53 So just know that this is a variable that you can select and manipulate but highly recommend you don't play with it because if you start playing around with top P and temperature.
+20:03 Now if you're not mathematically inclined or statistically inclined, you're going to be introducing all this unknown of what token selection you're getting.
+20:11 On top of the fact, we have a model, which is also prone to hallucinations, and now you can really compound hallucination by experimenting with both parameters.
+20:19 If you want to experiment something, experiment with temperature. All right, so now we have an understanding of major components and different structures of prompts.
+20:31 Now we can it into comparing LLN performance. And obviously, big picture, this is what the world looks like today. If this video is still up in 12 months, which I hope it will be, then things might have changed quite a bit.
+20:47 A lot of the foundations here, like all these prompting strategies, though, are evergreen, meaning even if we have raising models that do this inherently, it's good to be able to articulate the words, terms, or concepts that these models are doing.
+21:00 If you as the business owner entrepreneur or leader know can detect what's happening similar to how myself as a developer, I don't do as much day-to-day code anymore.
+21:11 I have a team that does that. But if I review their code, I can read it and see what's happening in their logic.
+21:16 I can follow and see what's happening. Same with an LM, we're going to get to the point where these are so smart, quote unquote that you not necessarily can understand why they're doing what they're doing but if you look through their chain of thought or their tree of thought or however they show their
+21:34 work you could start to see a whole interesting it did a little bit of a soft reflection here some soft reflection prompting and then we did some tree of thought it seems in this section and some chain of thought here and that'll be super helpful in things go wrong or you want to make it more dialed 
+21:49 in. So excuse me, model comparison. As of 2D, we have some major components. We got gbd40 and 4.5. We got Claude 3.5 and 2.7.
+22:03 Then we have 1.5 2.0 and Gemini 2.5 Pro, which is newer as of today. And then with context window, if you use the old 2.4, then it's 302K.
+22:16 If you're And then if you use, I think it's O3 mini, et cetera, it's now a 200,000. So this is going to vary over time.
+22:27 Claude is always very stingy, even with its 2.7 model of having a pretty small context window. And Gemini's always probably 10 times more generous.
+22:37 And it's really good at that needle and haystack logic that I mentioned before. So, if you want rules of thumb, really good structures is that 4.5 and 0.03 and 0.01 are really good at reasoning.
+22:51 For Claude, you have a hybrid brain, so 3.7 is not just reasoning, it's a hybrid, meaning sometimes it will use the old world models that are not reasoning for tasks that are very basic, whereas for tasks that need complex reasoning, it will use reasoning logic.
+23:07 So this one is interesting because I think that we're heading there where eventually you'll have Reasoning models that can use different levels of brewing power.
+23:17 Now we're obviously entrepreneur Anthropomorphizing all of this meaning we're making this seem like a human light, but it's not Um 3.7 on it and 2.5 on it is just really exceptional for its ability to write copy especially long-form copy That's what's more human like because like I said if you google
+23:36 it you're gonna see that there's this YouTube video of this woman who's the full-time personality expert of cloth. So she spends five to six hours per day talking to cloth, recommending different variations to how it should respond to certain questions.
+23:53 Very interesting. But this is not something that OpenEye is doing. OpenEye is just trying to figure out how they can pump out hardware, new models, $20,000 a month agents that you shouldn't pay for, etc.
+24:06 Gemini is going to be, in my opinion, the dark horse that will end up winning this whole race, because they just have so much data, and assuming we don't get anything else that's not a transformer, they'll have them enoply on winning this race.
+24:20 So Gemini, for me, learn how to use it. Try to integrate into more into your workflow, because I think this will be a worthy adversary, so we'll this.
+24:29 But I see ourselves using all three of these, and right now for me it's like 80 or 70, 20, 10.
+24:37 I think it will become 70, 20, 10. I still think unless CloudFix is this contact window, it will still be not fully usable for a lot of use cases.
+24:49 It seems to be very lazy on context window. So another food for thought there. Now for 4.5 optimization for a system message, we should have in general, a set role, behavior, consistent requirements.
+25:04 For example, a persona assignment, you are a financial advisor who provides concise, actionable advice, and for user message, clear instructions, specify format if needed, and provide necessary context, and formatting tips, a little orange, a little funky, request step-by-step reasoning, even though 
+25:21 they're not reasoning models, if you say step-by-step, it has a higher likelihood of not hallucinating as much. Next is using lists, or tables for clarity, and then asking for specific output structures, super helpful.
+25:35 And this means like output just in JSON, or output in this unformatted markdown format so we can ingest it more easily.
+25:43 And then with for row, it is reliable structure, excels at detailed reasoning tasks. And with 4.5, it's a lot more conversational.
+25:52 So So recently what happened is someone was knocking off YouTube videos and literally my hook to my script, to the actual resources I give on Gumroad, they acted like they came up with themselves and I was upset and I wanted to comment something.
+26:10 So instead of me letting out my fury, I went to 4.5 and said, hey, here's a situation. I told it how I felt and I crafted such a beautiful sentence that was stern but friendly and maybe look professional in within two or three minutes that bad actor had shouted out that I was the creator of the reverses
+26:29 in that video so that's a really interesting use case very lifelike use case of when you'd want to use 4.5 my theory and a lot of other people's theory is that 4.5 was supposed to be GPT-5 but because all these other models came out they've had to say it's 4.5 from a PR standpoint to say you know what
+26:48 that's not our best in brightest this is is just a good model. But what's cool about this is I love the copy of this, and I would say when it comes to Clawed versus 4.5, I like 4.5 for more professional copy, whereas with Clawed, I like it more so for artistic copy.
+27:09 All right, so, and then just comparing again, at a glance here, so if we go to 4.5, you'd wanna say something like you are a helpful financial advisor, user message would be how should I invest 10 grand and then basically your goals I recommend X, Y, C.
+27:23 So that's what a 4.5 message will look like. With 3.57 it'll look like this. So I need you to act as a financial advisor.
+27:33 I got this. I'm looking for something relatively safe with a good returns. What would you recommend? Notice the difference here.
+27:38 For this one we're providing it like one one sentence max of context, whereas Claude likes typically 2 to 3x, the amount of context that 4.5, especially Gemini like.
+27:51 And then in terms of the response, check your answer for errors. Claude has something called self-verification where they've built into the model, like I said before, the ability to introspect on whether or not it should respond in a certain way.
+28:06 So there's not reasoning. It's just like another guardrail or the layer they have before you get the response. And, like I said in terms of characteristics, GBT4 and 4.5 are structured, role-based format, clear separations of instructions, and concise by default, which is annoying, right?
+28:22 Because sometimes you want to expand more. Reasoning models solve this a lot, especially O3 Mini, because it has again a large output context window.
+28:31 And then with cloud, it's more conversational, nicer, more poetic, more artistic, and it benefits from what I just mentioned before.
+28:39 It has that extra layer of guardrails, which is why it used to be famous, Cloud 2.5, saw it, for giving so many refusals where I would say outright, no, I'm not responding to this, because it was overindexing too much on this self-effication.
+28:54 All right, so let's keep it rolling here. Oh, there we go. For Gemini, it's trying to become the all-in-all model, which is why it's the only model right now where you can upload a four to five minute mid to low quality or mid fidelity video as input whereas opening eye clawed or not even remotely close
+29:16 to those as inputs. That's why it's so important to keep track of this model because it can do text, image, audio, what I'm missing here is video and it can output all these three things as well.
+29:29 So you can output text, can output now visuals, Obviously images, charts, graphs, etc. It can output tools. It can output entire UI.
+29:37 It's like lovable, etc. And it can out. It's going to output videos very soon. It's coming. That's natively multi-models, kind of like the main TLDR of this model.
+29:48 And if we go here, so there's a context window. Again, this is skewed. I'm basically indexing on the old GPT-4.
+29:56 Right now, you have 4-0 with I think 100,000 input token to 200,000. Oh, sorry. I think it's 128,000 tokens. This is changing all the time, and I'm losing track.
+30:07 32 cases, pure GPT-4. 3.7 Sonic, I think, is up to 200,000. Right now, the latest model. 3.5 Sonic, I believe, is 100,000.
+30:18 And then with Gemini Pro, like I said, it's a million, and they're saying as of this recording it will become two three million in the not so different distant future rather so that's good to know there and if you want it compares inside by side I won't go through this exhaustively since you have access
+30:34 to these slides but 4.5 they like structured rules Claude likes conversational okay Gemini likes very simple like imagine you're being cold in you're sassy and you woke up, you didn't have coffee.
+30:49 That's how you should speak to Gemini. It doesn't like too much verbosity in the underlying prompts. It's just like, it likes the output clear cut into the point and it wants you to input clear cut into the point.
+31:00 And then with the strengths and weaknesses, obviously reasoning 4.5, sorry 4.5, 0.3, 0.1, they're all good. You have longer documents or really good output with 3.7 and so on it, then anything multimodal, multimodal use cases are good here.
+31:17 I don't find Gemini good for copy at all. It's just smart, it's good at answering questions, it's good at coming up with recommendations but writing something but you put in front of a customer or colleague, not something I'd recommend.
+31:31 And then the rest here in terms of weaknesses, the biggest weakness I would say is with Gemini, it's a hard model to crack in terms of how to prompt it, which is why I like to use Metaprompting quite a bit, which is just telling the model, hey, act as a prompt engineer, write a prompt that will accomplish
+31:47 X, Y, Z. I would say Gemini models are the most telling to use this because they're trickier to use the ground roots or, sorry, grassroots principles to prompt them just like everything else.
+31:58 There's something a bit nuanced in the way they output tokens versus other models where, again, I feel like it's a soloist model, it has no actual personality, whereas both of these, especially 4.5 and especially 3.7 have a lot of personality.
+32:18 Now just to kind of end things off for this portion of the course, which is the theory part of the course, we have use cases and applications.
+32:27 So TLDR building a prompt engineer workflow looks a lot like this and we went through a lot of it. So prompt ideation and design, you have to do some testing and validation, right?
+32:37 So I'll do that. Next is documentation and knowledge sharing. And then continuous improvement. This one, I want to hyper emphasize and put a couple arrows here in all directions.
+32:49 Because if you don't do continuous improvement, is no evergreen prompt that will span all time, unless it's a local distilled model on your computer, where that model is just not going to change.
+33:01 There's not going to be there's not going to be any personality changes or framework changes. Outside of that, you're going to be always iterating and developing.
+33:09 Now when it comes to business writing, obviously, professional communications, it's helpful to use few shot examples, even with reasoning models.
+33:16 It's helpful. We learned about scaffolding. It's good for complex documents and it's good to get first an outline of complex documents.
+33:25 Then have those be approved either by you or get it to have a framework for proving that copy itself, and then you want to fill those sections and make sure that you can mitigate in hallucination, scaffolding, chain of thought prompting, really good for containing that issue.
+33:42 Marketing needs creativity, so if you know you need creativity, this is where I would use Claude, very helpful. If you're just brainstorming, the GPT is not bad.
+33:51 I use GPT a lot for my titles for YouTube, just to help me get the creative juices going, I got basically a Chatchy T project that I use that I go back and forth with every time I release a video.
+34:04 Next is self critique, pick the best one and why, also good for creativity, so I would use something like 4.5 for Chatchy T opening eye, or I'd use 2.7son at using extended thinking, which is this little toggle you can click to make it think a lot more.
+34:21 And then if we go here, for code generation debugging, if you are coding inclined, typically cloud is really exceptional at coding and now Gemini 2.5 Pro really good.
+34:33 And it internally uses chain of thought like you want to use a reason model for coding, honestly, 99 point, excuse me, 99.9% of the time, the only time I would not use a reason the model for code, is if you just want to add comments or inline decorators, Foreo can take care of that expensively.
+34:53 Next here, we got automation and workflow orchestration, so when it comes to N8N, make.com yada yada yada, you have want to have obviously structured outputs, that's going to be really important.
+35:05 Few shot for automations is super important, like I mentioned before. If you use a make.com automation and you have three opening eye steps, you are technically chain prompting.
+35:14 So that's really important. And then function calling for system integration. OpenAI really strong for function calling. Claude, I would say it's not as good.
+35:26 Now, MCP servers will change that conversation, but natively not as good. Gemini, we found to be mediocre in terms of function calling properly.
+35:34 So I would give the function calling award award rather to open AI. Now for creative writing, zero shot with a rich prompt.
+35:45 Now creative writing, it's actually helpful to add more context. Again, I would use 3.7 on it for this, but if you want to go off the real beaten path, I would over index on this.
+35:55 A tree of thought, like we saw in the prior tutorial. This is going to let you do something like this, which just give three possible endings to this story, right?
+36:05 So if it's a linear thinking model like OpenAI, it's gonna be maybe creative-ish, but it's not gonna go very deep, whereas views three of thought with, I don't know, Claude, you might get some really interesting endings that are unlikely, and that's why I say, it encourages divergent thinking, very helpful
+36:25 . And then you have role-playing, so you are Charles Dickens, this is nothing new, this applies to all the language models, but this is probably the most important one that I've paid it to.
+36:35 Next, summarization. Every single alum can do this. Some are just better at focusing on non-formulative responses, but whether it's Claude, Gemini, or even OpenEye, it just comes down to your prompting.
+36:49 If you give it enough frameworks for how it should summarize or how it should synthesize, that's a lot So scaffolding super helpful for this, again, which is a proxy or pseudo chain prompting.
+37:02 And then when it comes to information extraction, extract the names, dates as JSON, using something like a reasoning model like O3 Mini, O1 Pro, O1, I would use those, this kind of request.
+37:15 Also opening has something called structured output for this API, very helpful for being able to manage and understand and manipulate data to get consistent outputs of JSON, especially if you want to build some form of actual full scale code custom code app.
+37:32 Right? Now, customer service and chatbots, this one now, you can use pretty much any model. I would just never use Gemini for this again, because it just lacks that customer support S kind of soul.
+37:44 So in the system problem, you're going to want to do some assignment irrespective of the model you choose. I really want to show some few shot examples of how to handle inquiries.
+37:53 So most of the probably difficult questions and then escalation protocols. So it's like someone swearing at you or they're saying you're being racist or insert thing here that would require escalation.
+38:04 It's really good to add those as a part of your few shot. And then the rest of it is context maintenance across conversation.
+38:11 Now with context and maintenance, ideally you want to choose a model that can natively also maintain that context. So, while, let's say you're using voice flow or bought press to build the chatbot, it is throwing in that context within each prompt and loading that over time to mitigate that loss of the
+38:31 loss in the middle logic. If you have a model that has an input window of at least 200,000 tokens, probably better for a conversation with an agent than using something that has 64,000 tokens.
+38:45 Almost there. Advanced reliability strategies. When it comes to rag, which is retrieval, augmented generation, which is just having a glorified vector database as your knowledge base, it's helpful to use self-checking.
+38:59 Basically, an example prompted being sure answer matches policy snippet. You want to use more of a rigid model or a reasoning model.
+39:07 With this thing, because you want to check your work multiple times, ideally, and that's why you're using some of like chain of thought, which raising models have embedded.
+39:14 Tree of thought, it's interesting again for creative content. I would definitely not use trade of thought for reg because you're going to get answers all over the place unless that's somehow related to the scope of your project.
+39:27 And then you, for anything that has multiple passes, again, you want to use something that uses either internally chain of thought like a raising model or you encourage scaffolding or chain of thought through that entire process.
+39:38 so that should be helpful there. Now, this is the course, finally, for anything theory. So if you've ever wanted to put a name to a technique or walk through why we care to say that prompt engineering is important, and to me, prompt engineering will be the only thing that matters is this entire course
+39:59 . And why I personally think, this is my opinion. Prompt Engineering is going to be so useful in the future is, right now we're making reasing models, because these companies want to move to hardware.
+40:12 We've yet to go into the ChatGVT moment where it's a humanoid robot. With a humanoid, oh, I'm just pronouncing that like crazy, with a humanoid robot.
+40:23 You as the user, you want to be able to give an unbelievably basic and vague command and And have it extrapolate the next 10 or 15 steps that will need to be executed as a result of said command.
+40:35 So with that, why I think there's a focus on raising models and why raising models will be the future is if you were to tell your humanoid cleaner bot or humanoid robot, hey, can you make us tacos, right?
+40:49 It should be able to go through its knowledge base at the time and say, okay, Mark loves ground beef, which I do.
+40:55 He loves curry flavor. He loves super spicy Thai flavor. He likes things. They're all over the place He also likes to eat gluten-free.
+41:03 So that one request should end up me going to programmatically is access Instacart API getting gluten-free products, getting organic ground beef and doing XYZ Follow-through, right?
+41:17 So that's where we're heading. So if you understand where we are right now Prompt Engineering will be evergreen, it'll just be different variations of Prompt Engineering.
+41:27 Like I said before, so hopefully this has been useful and by the end of this you are, I can tell you from doing tons of paid consult, you are better than 80% of people at Prompt engineering.
