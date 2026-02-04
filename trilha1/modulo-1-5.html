@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.5 - Temperature e Top P | Prompt Engineering</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Prompt Engineering</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Intermediario</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../index.html" class="hover:text-emerald-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.5</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 1.5
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🎲 Temperature e Top P</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Entenda como esses parametros controlam a "criatividade" do modelo e quando usar
+        cada configuracao para obter resultados otimos.
+      </p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">20</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Teoria</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🎯 O que e Temperature?</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Muita gente diz que temperature e um "controle de criatividade". Isso e
+        <strong class="text-emerald-400">parcialmente verdade</strong>, mas tecnicamente, temperature
+        controla a <strong>selecao de tokens</strong> - quao "aventureiro" o modelo sera ao escolher a proxima palavra.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">💡</span> Conceito Tecnico
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Imagine a frase: <em>"O cachorro estava correndo no campo e..."</em>
+        </p>
+        <p class="text-neutral-300 mb-4">
+          Palavras provaveis: <strong>latiu, brincou, pulou</strong> (alta probabilidade)<br>
+          Palavras improvaveis: <strong>cozinhou, digitou, voou</strong> (baixa probabilidade)
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong>Temperature 0:</strong> Sempre escolhe a palavra mais provavel (deterministico)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong>Temperature 1-2:</strong> Pode escolher palavras menos provaveis (mais "criativo")</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> A Evolucao do Conceito
+        </h3>
+        <p class="text-neutral-300">
+          Claude recentemente introduziu treinamento para ser <strong>naturalmente mais criativo</strong>
+          na selecao de tokens, nao dependendo apenas de temperature. Isso significa que mesmo com
+          temperature baixa, o output tende a ser menos formulaico do que em modelos anteriores.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📊 Ranges de Temperature</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A escala de temperature varia por modelo, mas geralmente vai de 0 a 2. Cada range e
+        otimizado para diferentes tipos de tarefas.
+      </p>
+
+      <!-- Tabela Comparativa -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden mb-6">
+        <table class="w-full text-sm">
+          <thead class="bg-dark-700">
+            <tr>
+              <th class="px-4 py-3 text-left text-emerald-400">Range</th>
+              <th class="px-4 py-3 text-left text-emerald-400">Comportamento</th>
+              <th class="px-4 py-3 text-left text-emerald-400">Casos de Uso</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-dark-600">
+            <tr>
+              <td class="px-4 py-3 text-neutral-300 font-medium">0 - 0.3</td>
+              <td class="px-4 py-3 text-neutral-400">Deterministico, previsivel</td>
+              <td class="px-4 py-3 text-neutral-400">Codigo, Q&A factual, analise de dados</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300 font-medium">0.3 - 0.7</td>
+              <td class="px-4 py-3 text-neutral-400">Balanceado</td>
+              <td class="px-4 py-3 text-neutral-400">Emails, conteudo geral, explicacoes</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300 font-medium">0.7 - 1.0</td>
+              <td class="px-4 py-3 text-neutral-400">Criativo, variado</td>
+              <td class="px-4 py-3 text-neutral-400">Marketing, brainstorm, copy</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300 font-medium">1.0 - 2.0</td>
+              <td class="px-4 py-3 text-neutral-400">Altamente criativo/aleatorio</td>
+              <td class="px-4 py-3 text-neutral-400">Poesia, arte, experimentacao</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-4">
+          <h4 class="font-bold text-blue-400 mb-2">🧊 Baixa (0-0.3)</h4>
+          <ul class="text-sm text-neutral-300 space-y-1">
+            <li>• Geracao de codigo</li>
+            <li>• Q&A factual</li>
+            <li>• Problemas logicos</li>
+          </ul>
+        </div>
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-4">
+          <h4 class="font-bold text-emerald-400 mb-2">⚖️ Media (0.5-0.8)</h4>
+          <ul class="text-sm text-neutral-300 space-y-1">
+            <li>• Conteudo geral</li>
+            <li>• Respostas balanceadas</li>
+            <li>• Emails profissionais</li>
+          </ul>
+        </div>
+        <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-4">
+          <h4 class="font-bold text-purple-400 mb-2">🔥 Alta (1.0-2.0)</h4>
+          <ul class="text-sm text-neutral-300 space-y-1">
+            <li>• Brainstorming</li>
+            <li>• Criatividade</li>
+            <li>• Poesia e arte</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">⚠️ Top P - O Parametro Esquecido</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <strong class="text-emerald-400">Top P</strong> (tambem chamado de nucleus sampling) e outro
+        parametro que afeta a selecao de tokens. Ele funciona de forma similar a temperature, mas
+        com uma logica diferente.
+      </p>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">🚨</span> Recomendacao Importante
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          <strong>Nao mexa no Top P</strong> a menos que voce realmente saiba o que esta fazendo.
+          Ajustar temperature E top P ao mesmo tempo pode criar resultados imprevisiveis e
+          aumentar drasticamente as hallucinations.
+        </p>
+        <p class="text-neutral-300">
+          Se voce quer experimentar com selecao de tokens, <strong>use apenas temperature</strong>.
+          Deixe top P no valor padrao (geralmente 1).
+        </p>
+      </div>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">💡</span> Como Top P Funciona (Resumo)
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Top P define o "pool" de tokens que o modelo considera. Com top_p=0.9, o modelo so
+          considera tokens que juntos somam 90% da probabilidade total.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong>Top P baixo (0.1):</strong> Pool muito restrito, muito deterministico</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong>Top P alto (1.0):</strong> Pool completo, considera todos os tokens</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🔬 Testando com Diferentes Temperatures</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Uma pratica comum no prompt engineering profissional e <strong class="text-emerald-400">testar
+        variacoes</strong> do mesmo prompt com diferentes temperatures para encontrar o sweet spot.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Metodologia de Teste
+        </h3>
+        <div class="space-y-4 text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="bg-emerald-500/20 text-emerald-400 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+            <span>Pegue 5-10 variacoes do mesmo prompt</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="bg-emerald-500/20 text-emerald-400 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+            <span>Teste cada um com temperatures: 0.2, 0.5, 0.8</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="bg-emerald-500/20 text-emerald-400 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+            <span>Teste em diferentes modelos da mesma familia (ex: Claude 3.5, 3.7, Haiku)</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="bg-emerald-500/20 text-emerald-400 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
+            <span>Compare resultados e identifique a configuracao mais consistente</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Por que Testar?
+        </h3>
+        <p class="text-neutral-300">
+          Isso ajuda a combater o <strong>prompt drift</strong> - o fenomeno onde um prompt que funcionava
+          perfeitamente para de funcionar depois de updates no modelo. Ao encontrar uma configuracao
+          robusta, voce minimiza a necessidade de retrabalho futuro.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🎨 Combinando Temperature com Tecnicas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Temperature pode ser combinada com outras tecnicas de prompting para resultados ainda mais interessantes.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">🌳 Tree of Thought + Alta Temp</h4>
+          <p class="text-sm text-neutral-400 mb-3">Uma combinacao poderosa para criatividade</p>
+          <p class="text-neutral-300 text-sm">
+            Tree of Thought ja incentiva pensamento nao-linear. Combinado com temperature 1.0-2.0,
+            voce pode obter resultados surpreendentemente criativos e nao-obvios.
+          </p>
+          <p class="text-xs text-neutral-500 mt-3">
+            Uso: Brainstorming, geracao de ideias, exploracao criativa
+          </p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-blue-400 mb-4">⛓️ Chain of Thought + Baixa Temp</h4>
+          <p class="text-sm text-neutral-400 mb-3">Para raciocinio preciso e confiavel</p>
+          <p class="text-neutral-300 text-sm">
+            Chain of Thought precisa de consistencia logica. Temperature baixa (0.2-0.5) garante
+            que cada passo do raciocinio seja solido e previsivel.
+          </p>
+          <p class="text-xs text-neutral-500 mt-3">
+            Uso: Problemas matematicos, analise logica, debugging
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Cuidado: Experimental
+        </h3>
+        <p class="text-neutral-300">
+          Combinacoes como Tree of Thought com alta temperature sao <strong>experimentais</strong> e
+          nao devem ser usadas em producao sem validacao extensiva. Otimo para explorar ideias,
+          mas os resultados podem variar muito.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🔧 Exercicio Pratico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Vamos experimentar com temperature para ver na pratica como ela afeta os resultados.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">📝</span> Desafio: Comparacao de Temperature
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          <strong>Prompt de teste:</strong>
+        </p>
+        <div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-4">
+          Escreva 3 slogans criativos para uma cafeteria hipster chamada "Grao Urbano"
+        </div>
+        <p class="text-neutral-300 mb-4">
+          <strong>Tarefa:</strong> Execute este prompt 3 vezes com cada temperature:
+        </p>
+        <ol class="list-decimal list-inside space-y-2 text-neutral-300 mb-4">
+          <li>Temperature 0.2 (3 execucoes)</li>
+          <li>Temperature 0.7 (3 execucoes)</li>
+          <li>Temperature 1.5 (3 execucoes)</li>
+        </ol>
+        <p class="text-neutral-300">
+          <strong>Observe:</strong>
+        </p>
+        <ul class="list-disc list-inside text-neutral-300 space-y-1">
+          <li>Quao similares sao os resultados entre execucoes?</li>
+          <li>Qual temperatura gera os slogans mais criativos?</li>
+          <li>Qual gera os mais coerentes/utilizaveis?</li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Resultado Esperado
+        </h3>
+        <p class="text-neutral-300">
+          <strong>Temp 0.2:</strong> Resultados quase identicos, seguros mas previsiveis.<br>
+          <strong>Temp 0.7:</strong> Variedade moderada, bom equilibrio.<br>
+          <strong>Temp 1.5:</strong> Resultados bem diferentes, alguns otimos, alguns estranhos.
+        </p>
+      </div>
+    </section>
+
+    <!-- RESUMO DO MODULO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Temperature</strong>
+              <span class="text-neutral-400"> - Controla a selecao de tokens (0 = deterministico, 2 = criativo)</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Top P</strong>
+              <span class="text-neutral-400"> - Evite mexer; deixe no padrao</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">0.2-0.5</strong>
+              <span class="text-neutral-400"> - Codigo, Q&A, tarefas que precisam de consistencia</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">0.5-0.8</strong>
+              <span class="text-neutral-400"> - Conteudo geral, emails, documentacao</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">1.0+</strong>
+              <span class="text-neutral-400"> - Brainstorming, criatividade, experimentacao</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">1.6 - Sensibilidade de Prompts: como pequenas mudancas causam grandes impactos</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-4.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="modulo-1-6.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Prompt Engineering Masterclass - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

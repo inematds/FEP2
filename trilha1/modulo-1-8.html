@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.8 - Casos de Uso por Modelo | Prompt Engineering</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Prompt Engineering</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Intermediario</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../index.html" class="hover:text-emerald-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.8</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 1.8
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🎯 Casos de Uso por Modelo</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Aplicacoes praticas: quando usar cada modelo para business writing, codigo,
+        automacao, criatividade e customer service.
+      </p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Pratico</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">💼 Business Writing</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Para comunicacoes profissionais, a escolha do modelo depende do <strong class="text-emerald-400">tipo de conteudo</strong>
+        e do <strong class="text-emerald-400">tom desejado</strong>.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-center space-x-2 mb-4">
+            <span class="text-2xl">📧</span>
+            <h4 class="font-bold text-green-400">Emails Profissionais</h4>
+          </div>
+          <p class="text-sm text-neutral-300 mb-3">
+            <strong>Recomendado: GPT-4.5</strong>
+          </p>
+          <p class="text-xs text-neutral-400">
+            Tom profissional, direto, sem excesso. Bom para comunicacoes corporativas padrao.
+          </p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-center space-x-2 mb-4">
+            <span class="text-2xl">✍️</span>
+            <h4 class="font-bold text-orange-400">Long-form Copy</h4>
+          </div>
+          <p class="text-sm text-neutral-300 mb-3">
+            <strong>Recomendado: Claude 3.7</strong>
+          </p>
+          <p class="text-xs text-neutral-400">
+            Artigos, blog posts, conteudo de marketing. Tom mais humano e engajante.
+          </p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-center space-x-2 mb-4">
+            <span class="text-2xl">📊</span>
+            <h4 class="font-bold text-blue-400">Relatorios Tecnicos</h4>
+          </div>
+          <p class="text-sm text-neutral-300 mb-3">
+            <strong>Recomendado: GPT O3/O1</strong>
+          </p>
+          <p class="text-xs text-neutral-400">
+            Analises de dados, relatorios financeiros. Reasoning para precisao.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">💡</span> Dicas para Business Writing
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span>Use <strong>few-shot examples</strong> mesmo com reasoning models</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span>Para documentos complexos, use <strong>scaffolding</strong> (outline primeiro)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span>Peca aprovacao de cada secao antes de continuar</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">💻 Codigo e Debugging</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Para geracao de codigo e debugging, <strong class="text-emerald-400">reasoning models</strong> sao
+        quase sempre a melhor escolha. A unica excecao sao tarefas triviais como comentarios.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden mb-6">
+        <table class="w-full text-sm">
+          <thead class="bg-dark-700">
+            <tr>
+              <th class="px-4 py-3 text-left text-emerald-400">Tarefa</th>
+              <th class="px-4 py-3 text-left text-emerald-400">Modelo Recomendado</th>
+              <th class="px-4 py-3 text-left text-emerald-400">Por que?</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-dark-600">
+            <tr>
+              <td class="px-4 py-3 text-neutral-300 font-medium">Codigo complexo</td>
+              <td class="px-4 py-3 text-neutral-400">Claude 3.7 / Gemini 2.5 Pro</td>
+              <td class="px-4 py-3 text-neutral-400">Melhor compreensao de contexto</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300 font-medium">Debugging</td>
+              <td class="px-4 py-3 text-neutral-400">GPT O3 / Claude 3.7</td>
+              <td class="px-4 py-3 text-neutral-400">Reasoning para rastrear bugs</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300 font-medium">Refatoracao</td>
+              <td class="px-4 py-3 text-neutral-400">Claude 3.7</td>
+              <td class="px-4 py-3 text-neutral-400">Entende padroes e best practices</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300 font-medium">Comentarios/Docs</td>
+              <td class="px-4 py-3 text-neutral-400">GPT-4o (mais barato)</td>
+              <td class="px-4 py-3 text-neutral-400">Tarefa simples, economiza custo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Regra dos 99.9%
+        </h3>
+        <p class="text-neutral-300">
+          Use reasoning models para codigo em <strong>99.9% dos casos</strong>. So use modelos mais simples
+          para tarefas triviais onde voce quer economizar e latencia/custo importam mais que qualidade.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">⚙️ Automacao e Workflows</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Para automacoes com N8N, Make.com, ou APIs, a escolha envolve trade-offs entre
+        <strong class="text-emerald-400">custo, latencia, e qualidade</strong>.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Structured Outputs</h4>
+          <p class="text-sm text-neutral-300 mb-3">
+            <strong>OpenAI</strong> tem a melhor implementacao de structured outputs para API.
+            Garante JSON valido e schema enforcement.
+          </p>
+          <p class="text-xs text-neutral-400">
+            Ideal para: automacoes que precisam parsear respostas programaticamente.
+          </p>
+        </div>
+        <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+          <h4 class="font-bold text-blue-400 mb-4">🔧 Function Calling</h4>
+          <p class="text-sm text-neutral-300 mb-3">
+            <strong>OpenAI</strong> tambem lidera em function calling. Claude suporta via MCP,
+            Gemini e mediocre.
+          </p>
+          <p class="text-xs text-neutral-400">
+            Ideal para: integracao com APIs externas, tool use.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Cuidado com Reasoning Models em Automacao
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O3 Mini tem modos de inteligencia (low, medium, high), mas <strong>voce nao controla quanto tempo pensa</strong>.
+          Pode ser 15 segundos ou 1 minuto. Isso e arriscado para:
+        </p>
+        <ul class="space-y-1 text-neutral-300">
+          <li>• UIs que esperam resposta rapida</li>
+          <li>• APIs com timeout definido</li>
+          <li>• Workflows com SLA estrito</li>
+        </ul>
+      </div>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">💡</span> Recomendacao para Automacao
+        </h3>
+        <p class="text-neutral-300">
+          Use reasoning models apenas para <strong>workflow automations</strong> onde latencia variavel
+          e aceitavel (background jobs, batch processing). Para realtime, prefira GPT-4o ou Claude 3.5 Sonnet.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🎨 Criatividade e Marketing</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Para tarefas criativas, a escolha do modelo e tao importante quanto a escolha de <strong class="text-emerald-400">temperature</strong>.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-orange-400 mb-4">🖊️ Copy Criativo</h4>
+          <p class="text-sm text-neutral-400 mb-3">Recomendado: Claude 3.7</p>
+          <ul class="text-sm text-neutral-300 space-y-2">
+            <li>• Headlines e slogans</li>
+            <li>• Posts para redes sociais</li>
+            <li>• Emails de marketing</li>
+            <li>• Descricoes de produtos</li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-green-400 mb-4">🧠 Brainstorming</h4>
+          <p class="text-sm text-neutral-400 mb-3">Recomendado: GPT-4.5 ou Claude</p>
+          <ul class="text-sm text-neutral-300 space-y-2">
+            <li>• Use self-critique: "pick the best one and why"</li>
+            <li>• Tree of Thought para ideias divergentes</li>
+            <li>• Temperature alta (0.8-1.2)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-purple-400 mb-4">📚 Escrita Criativa</h4>
+          <p class="text-sm text-neutral-400 mb-3">Recomendado: Claude + alta temperature</p>
+          <ul class="text-sm text-neutral-300 space-y-2">
+            <li>• Ficcao e narrativas</li>
+            <li>• Poesia</li>
+            <li>• Role-playing ("You are Charles Dickens")</li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-blue-400 mb-4">🎬 Titulos YouTube</h4>
+          <p class="text-sm text-neutral-400 mb-3">Recomendado: GPT-4.5 com projeto dedicado</p>
+          <ul class="text-sm text-neutral-300 space-y-2">
+            <li>• Crie um projeto/GPT especifico</li>
+            <li>• Alimente com exemplos de sucesso</li>
+            <li>• Itere a cada video</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🎧 Customer Service e Chatbots</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Para chatbots de atendimento, a <strong class="text-emerald-400">personalidade</strong> do modelo importa tanto quanto sua capacidade tecnica.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Requisitos para Chatbots
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-semibold text-white mb-2">System Prompt Robusto</h4>
+            <ul class="text-sm text-neutral-300 space-y-1">
+              <li>• Persona clara e consistente</li>
+              <li>• Limites bem definidos</li>
+              <li>• Tom de voz especificado</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-white mb-2">Few-shot Examples</h4>
+            <ul class="text-sm text-neutral-300 space-y-1">
+              <li>• Perguntas dificeis comuns</li>
+              <li>• Situacoes de escalacao</li>
+              <li>• Respostas padrao para casos sensiveis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> NAO use Gemini para Customer Service
+        </h3>
+        <p class="text-neutral-300">
+          Gemini carece da "alma" necessaria para atendimento ao cliente. E muito tecnico e pode
+          soar frio ou robotico. Prefira <strong>Claude</strong> (mais empatico) ou <strong>GPT-4.5</strong> (mais equilibrado).
+        </p>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Context Window para Conversas Longas
+        </h3>
+        <p class="text-neutral-300">
+          Se seu chatbot pode ter conversas longas, escolha um modelo com <strong>context window adequado</strong>.
+          Com 64K tokens, voce pode perder contexto rapido. Com 200K+ (Claude, Gemini), conversas extensas ficam mais consistentes.
+        </p>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">📋 Cheat Sheet Final</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Uma referencia rapida para escolher o modelo certo para cada situacao.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-x-auto mb-6">
+        <table class="w-full text-sm">
+          <thead class="bg-dark-700">
+            <tr>
+              <th class="px-4 py-3 text-left text-emerald-400">Caso de Uso</th>
+              <th class="px-4 py-3 text-left text-emerald-400">1a Escolha</th>
+              <th class="px-4 py-3 text-left text-emerald-400">2a Escolha</th>
+              <th class="px-4 py-3 text-left text-emerald-400">Evitar</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-dark-600">
+            <tr>
+              <td class="px-4 py-3 text-neutral-300">Reasoning/Logica</td>
+              <td class="px-4 py-3 text-green-400">GPT O3</td>
+              <td class="px-4 py-3 text-orange-400">Claude 3.7</td>
+              <td class="px-4 py-3 text-neutral-500">GPT-4o</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300">Copy Criativo</td>
+              <td class="px-4 py-3 text-orange-400">Claude 3.7</td>
+              <td class="px-4 py-3 text-green-400">GPT-4.5</td>
+              <td class="px-4 py-3 text-blue-400">Gemini</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300">Codigo</td>
+              <td class="px-4 py-3 text-orange-400">Claude 3.7</td>
+              <td class="px-4 py-3 text-blue-400">Gemini 2.5 Pro</td>
+              <td class="px-4 py-3 text-neutral-500">-</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300">Docs Longos</td>
+              <td class="px-4 py-3 text-blue-400">Gemini</td>
+              <td class="px-4 py-3 text-orange-400">Claude</td>
+              <td class="px-4 py-3 text-green-400">GPT (context)</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300">Function Calling</td>
+              <td class="px-4 py-3 text-green-400">GPT</td>
+              <td class="px-4 py-3 text-orange-400">Claude (MCP)</td>
+              <td class="px-4 py-3 text-blue-400">Gemini</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300">Customer Service</td>
+              <td class="px-4 py-3 text-orange-400">Claude</td>
+              <td class="px-4 py-3 text-green-400">GPT-4.5</td>
+              <td class="px-4 py-3 text-blue-400">Gemini</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300">Multimodal (Video)</td>
+              <td class="px-4 py-3 text-blue-400">Gemini</td>
+              <td class="px-4 py-3 text-neutral-500">-</td>
+              <td class="px-4 py-3 text-neutral-500">-</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-neutral-300">RAG/Retrieval</td>
+              <td class="px-4 py-3 text-green-400">GPT (reasoning)</td>
+              <td class="px-4 py-3 text-blue-400">Gemini (context)</td>
+              <td class="px-4 py-3 text-neutral-500">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎓</span> Conclusao da Trilha 1
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Parabens! Voce completou os <strong>Fundamentos de Contexto</strong>. Agora voce entende:
+        </p>
+        <ul class="space-y-2 text-neutral-300 mb-4">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400">✓</span>
+            <span>Context windows e a analogia do credito</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400">✓</span>
+            <span>Lost in the Middle e como mitigar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400">✓</span>
+            <span>Chunking, summarizacao, e estruturacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400">✓</span>
+            <span>Temperature, Top P, e sensibilidade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400">✓</span>
+            <span>Quando usar GPT vs Claude vs Gemini</span>
+          </li>
+        </ul>
+        <p class="text-neutral-300">
+          <strong>Proximo passo:</strong> Trilha 2 - Tecnicas Intermediarias (Chain of Thought, Scaffolding, Tree of Thought...)
+        </p>
+      </div>
+    </section>
+
+    <!-- RESUMO DO MODULO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">🏆</span> Trilha 1 Completa!
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">8 Modulos</strong>
+              <span class="text-neutral-400"> - Fundamentos de Contexto completos</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">48 Topicos</strong>
+              <span class="text-neutral-400"> - Conceitos essenciais dominados</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Base Solida</strong>
+              <span class="text-neutral-400"> - Pronto para tecnicas avancadas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Proxima Trilha:</h3>
+          <p class="text-neutral-300">Trilha 2 - Tecnicas Intermediarias: Chain of Thought, Few-shot, Scaffolding, Tree of Thought, Self-Reflection</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-7.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Iniciar Trilha 2 →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Prompt Engineering Masterclass - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
