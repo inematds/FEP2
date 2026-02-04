@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trilha 3 - Meta Prompting Avancado | Prompt Engineering</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <!-- Logo + INEMA.CLUB -->
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Prompt Engineering</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+
+        <!-- Trilhas + Theme Toggle -->
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <!-- Trilha 1 -->
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <!-- Trilha 2 -->
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Intermediario</span>
+          </a>
+          <!-- Trilha 3 (ativa) -->
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        TRILHA 3
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🧠 Meta Prompting Avancado</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Domine Vibe Prompting, Reverse Engineering de Estilo, Custom GPTs e tecnicas avancadas para dominar qualquer novo modelo rapidamente.
+      </p>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">8</div>
+          <div class="text-xs text-neutral-400">Modulos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">48</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">~4h</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Expert</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVEGACAO RAPIDA -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h2 class="text-lg font-semibold mb-4 text-neutral-400">Navegacao Rapida</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <a href="modulo-3-1.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-purple-500/50 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.1</span>
+        <p class="text-sm text-neutral-300 mt-1">Meta Prompting</p>
+      </a>
+      <a href="modulo-3-2.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-purple-500/50 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.2</span>
+        <p class="text-sm text-neutral-300 mt-1">Reverse Engineering</p>
+      </a>
+      <a href="modulo-3-3.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-purple-500/50 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.3</span>
+        <p class="text-sm text-neutral-300 mt-1">Progressive PE</p>
+      </a>
+      <a href="modulo-3-4.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-purple-500/50 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.4</span>
+        <p class="text-sm text-neutral-300 mt-1">Novos Modelos</p>
+      </a>
+      <a href="modulo-3-5.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-purple-500/50 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.5</span>
+        <p class="text-sm text-neutral-300 mt-1">Custom GPTs</p>
+      </a>
+      <a href="modulo-3-6.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-purple-500/50 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.6</span>
+        <p class="text-sm text-neutral-300 mt-1">Business Cases</p>
+      </a>
+      <a href="modulo-3-7.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-purple-500/50 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.7</span>
+        <p class="text-sm text-neutral-300 mt-1">Prompt Compression</p>
+      </a>
+      <a href="modulo-3-8.html" class="bg-dark-800 rounded-lg p-3 border border-dark-600 hover:border-purple-500/50 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.8</span>
+        <p class="text-sm text-neutral-300 mt-1">Workflow Completo</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- DIVISOR -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="border-t border-dark-600 my-4"></div>
+    <h2 class="text-lg font-semibold text-neutral-400 mb-6">Conteudo Detalhado</h2>
+  </div>
+
+  <!-- MODULOS -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+
+    <!-- MODULO 3.1 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.1</span>
+          <span class="text-xs text-neutral-500">~25 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🧠 O que e Meta Prompting</h3>
+        <p class="text-neutral-400 text-sm">Use IA para criar prompts melhores - a habilidade que acelera todas as outras.</p>
+      </div>
+
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🎯</span>
+            <div>
+              <span class="font-medium">Definicao de Meta Prompting</span>
+              <span class="text-neutral-500 text-sm ml-2">- IA escrevendo prompts</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Meta prompting e pedir ao AI para escrever o prompt em si. Voce descreve o que quer e o modelo cria o prompt otimizado.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Acelera drasticamente seu workflow - o AI entende suas intencoes e cria prompts mais eficazes que voce faria manualmente.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Prompt sobre prompts | Self-referential | IA como co-criador | Compressao de expertise.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🎤</span>
+            <div>
+              <span class="font-medium">Vibe Prompting</span>
+              <span class="text-neutral-500 text-sm ml-2">- Prompts por voz natural</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Usar voz para criar prompts - stream of thought, flow of thought. Reduz friccao entre o que esta na sua cabeca e o prompt final.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Voce consegue passar muito mais detalhe falando naturalmente do que digitando e formatando acronimos bonitos.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Friccao reduzida | Mais detalhes | Menos scope creep | Voz -> texto -> prompt.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🔄</span>
+            <div>
+              <span class="font-medium">O Problema do Scope Creep</span>
+              <span class="text-neutral-500 text-sm ml-2">- Por que nao sabemos o que queremos</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Voce pensa que quer X, mas ao ver a resposta percebe que queria Y, Z, A e B. Como cliente de projeto, suas necessidades evoluem.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Entender scope creep ajuda a usar meta prompting iterativamente - cada interacao refina o que realmente precisa.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Iteracao natural | Descoberta progressiva | Prompts como proxy | Detalhes aumentam likelihood.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">📦</span>
+            <div>
+              <span class="font-medium">Prompts como Arquivos ZIP</span>
+              <span class="text-neutral-500 text-sm ml-2">- Compressao de conhecimento</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Um prompt bem feito e como um ZIP file - comprime nuances, situacoes, feedbacks de uma conversa inteira em texto reutilizavel.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Permite transportar conhecimento complexo entre sessoes, projetos e ferramentas. E IP reutilizavel.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Compressao de expertise | Reutilizacao | Custom GPTs | Claude Projects | Portabilidade.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🛠️</span>
+            <div>
+              <span class="font-medium">Quando Usar Meta Prompting</span>
+              <span class="text-neutral-500 text-sm ml-2">- Casos ideais</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Use para: criar assistentes personalizados, capturar voz/estilo, workflows repetitivos, dominios especializados.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Saber quando aplicar meta prompting vs escrever diretamente economiza tempo e melhora qualidade.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Assistentes | Voice cloning | Automacao | Dominios especializados | Multi-shot interno.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔧</span>
+            <div>
+              <span class="font-medium">Exercicio: Primeiro Meta Prompt</span>
+              <span class="text-neutral-500 text-sm ml-2">- Criando um prompt com AI</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Pratique: descreva uma tarefa por voz/texto, peca ao AI para criar um prompt otimizado, teste e refine.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Experiencia hands-on mostra o poder do meta prompting na pratica.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Descrever intencao | Pedir prompt | Testar | Iterar | Comparar com manual.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-3-1.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.2 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.2</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔍 Reverse Engineering de Estilo</h3>
+        <p class="text-neutral-400 text-sm">Capture sua voz unica em prompts - emails, escrita, comunicacao no seu estilo.</p>
+      </div>
+
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">📧</span>
+            <div>
+              <span class="font-medium">O Problema do "Sound Like Me"</span>
+              <span class="text-neutral-500 text-sm ml-2">- Por que ninguem sabe seu estilo</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">A maioria tenta "here are 5 examples, sound like me" - muito simples. Nuances reais requerem processo estruturado.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Voce nao conhece seu proprio estilo ate alguem analisar. AI pode identificar padroes que voce nunca percebeu.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Self-awareness limitada | Terceira perspectiva | Nuances inconscientes | Analise empirica.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🎓</span>
+            <div>
+              <span class="font-medium">O Metodo do "Email Intern"</span>
+              <span class="text-neutral-500 text-sm ml-2">- Treinando um assistente</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Imagine um intern novo: mostre emails recebidos, sua resposta, peca ao AI gerar resposta, corrija, repita por uma semana.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Ao final, o AI entende nuances como "friendly conditional statements" que voce nem sabia que usava.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Training by example | Delta analysis | Feedback iterativo | Uma semana de pratica.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">📊</span>
+            <div>
+              <span class="font-medium">Analise de Delta</span>
+              <span class="text-neutral-500 text-sm ml-2">- O que mudou e por que</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Apos corrigir resposta do AI, peca analise: "o que mantive, o que mudei, por que". AI aprende seus padroes especificos.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Delta analysis revela padroes como "encurta sentencas", "usa dashes", "assumptive close" que sao seu estilo unico.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">What kept | What adjusted | Pattern recognition | Style DNA extraction.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">💬</span>
+            <div>
+              <span class="font-medium">Friendly Conditional Statements</span>
+              <span class="text-neutral-500 text-sm ml-2">- Descobertas que AI encontra</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Exemplo real: AI identificou uso de "assuming that goes well" - voce nao teria palavras para descrever esse padrao.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">AI pode articular padroes que voce usa inconscientemente - PhD em linguistica embutido no modelo.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Linguistic patterns | Unconscious habits | AI as mirror | Style articulation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🔧</span>
+            <div>
+              <span class="font-medium">Reverse Meta Prompt Final</span>
+              <span class="text-neutral-500 text-sm ml-2">- Gerando o prompt comprimido</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">"Act as world-class prompt engineer, analyze all feedback, create prompt in markdown code block capturing all nuances."</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">O prompt resultante inclui tone of voice, email structure, sections, exemplos multi-shot - tudo automatico.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Markdown code block | Multi-shot automatico | Nuance considerations | Compressed expertise.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔁</span>
+            <div>
+              <span class="font-medium">Iteracao Continua</span>
+              <span class="text-neutral-500 text-sm ml-2">- Mantendo o "intern" atualizado</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Nomeie o chat "Email Intern", volte sempre que receber email novo que nao foi bem respondido, ajuste e regenere prompt.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Em 3 dias a 1 semana voce tera prompt excepcional que captura nuances que nao conseguiria escrever sozinho.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Named chat | Living document | Continuous learning | Real-world refinement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-3-2.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.3 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.3</span>
+          <span class="text-xs text-neutral-500">~25 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📈 Progressive Prompt Engineering</h3>
+        <p class="text-neutral-400 text-sm">Workflow iterativo onde cada interacao melhora seu prompt progressivamente.</p>
+      </div>
+
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🔄</span>
+            <div>
+              <span class="font-medium">O Conceito de Progressive PE</span>
+              <span class="text-neutral-500 text-sm ml-2">- Melhorias incrementais</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Em vez de criar prompt perfeito de uma vez, deixe emergir atraves de uso real, feedback e ajustes continuos.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Voce nao sabe todas as situacoes que vai enfrentar. Progressive PE se adapta ao mundo real.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Emergent design | Real-world testing | Continuous improvement | Living prompts.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">📋</span>
+            <div>
+              <span class="font-medium">Setup: Preparando a Conversa</span>
+              <span class="text-neutral-500 text-sm ml-2">- Instruindo o AI</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">"Prepare-se para exemplos. Mostrarei email + resposta AI + meu feedback. Depois, testarei voce. Mantenha track de mudancas."</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Setup claro garante que AI entende o processo e mantém contexto entre iteracoes.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Explicit instructions | Context preservation | Pattern tracking | Training phase vs test phase.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">📝</span>
+            <div>
+              <span class="font-medium">Fase de Exemplos</span>
+              <span class="text-neutral-500 text-sm ml-2">- Mostrando padroes</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Mostre 2-3 emails com suas respostas ideais. AI comeca a identificar padroes empiricos no seu estilo.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Cada exemplo adiciona dados para o modelo. Mais variedade = melhor generalizacao.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Sample received email | Exemplar response | Empirical observations | Pattern accumulation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">🎯</span>
+            <div>
+              <span class="font-medium">Fase de Teste</span>
+              <span class="text-neutral-500 text-sm ml-2">- Validando aprendizado</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">"Ready for real world - aqui esta email novo, responda baseado no que aprendeu." Depois, corrija e peca analise do delta.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Teste revela gaps no aprendizado. Cada correcao refina o entendimento do modelo.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Real world test | Feedback loop | Gap identification | Continuous refinement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">⚡</span>
+            <div>
+              <span class="font-medium">Dica: Prep While Waiting</span>
+              <span class="text-neutral-500 text-sm ml-2">- Maximize produtividade</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Enquanto AI processa, ja prepare o proximo prompt. Nao va pegar cafe a cada interacao.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Quality of life hack - reduz tempo total de sessoes de refinamento significativamente.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Parallel prep | Time optimization | Flow state | Reduced context switching.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔧</span>
+            <div>
+              <span class="font-medium">Exercicio: Uma Semana de Progressive PE</span>
+              <span class="text-neutral-500 text-sm ml-2">- Aplicacao real</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Desafio: mantenha chat aberto por 1 semana, drop emails diarios, corrija respostas, gere prompt final no fim.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Experiencia completa do ciclo progressive PE com resultado tangivel e reutilizavel.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Week-long practice | Daily iteration | Final synthesis | Reusable artifact.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-3-3.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.4 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.4</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🚀 Aprendendo Novos Modelos Rapidamente</h3>
+        <p class="text-neutral-400 text-sm">Tecnicas para dominar qualquer novo modelo em horas, nao semanas.</p>
+      </div>
+
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">📚</span>
+            <div>
+              <span class="font-medium">Deep Research com AI</span>
+              <span class="text-neutral-500 text-sm ml-2">- Aprendendo sobre Llama 4</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Use Perplexity/O3 para pesquisar novo modelo: "Full delta comparison vs outros modelos, como promptar, exemplos."</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Nao espere videos no YouTube. Em horas voce pode ter compreensao funcional de modelo recem-lancado.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Deep research | Delta comparison | Perplexity Pro | Source crawling | Study guide.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">📄</span>
+            <div>
+              <span class="font-medium">Fontes Primarias</span>
+              <span class="text-neutral-500 text-sm ml-2">- Papers e documentacao</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Va a fonte: Yan LeCun (Meta), llama.com, papers oficiais. Boring to read, mas de a um LLM para processar.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Papers revelam design decisions que explicam comportamento do modelo - conhecimento de primeira mao.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Primary sources | Research papers | Official docs | LLM as paper reader.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🔍</span>
+            <div>
+              <span class="font-medium">Diferencas de Formato</span>
+              <span class="text-neutral-500 text-sm ml-2">- XML tags, blob text, etc</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Cada modelo tem preferencias: Llama prefere XML-like tags, OpenAI adora markdown, Claude usa XML. Descobrir isso e chave.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Formato errado = performance suboptima. O mesmo prompt formata diferente pode ter resultados dramaticamente diferentes.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Format preferences | XML vs Markdown | Blob text | Model-specific syntax.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">📊</span>
+            <div>
+              <span class="font-medium">Side-by-Side Comparison</span>
+              <span class="text-neutral-500 text-sm ml-2">- Mesma task, modelos diferentes</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">"Show me side by side: prompt for RAG system in Llama 4 vs Claude vs O3 Mini, optimized for each."</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Comparacao direta revela diferencas sutis que seriam invisiveis olhando cada modelo separadamente.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Comparative analysis | Same task | Different optimizations | Key differences highlighted.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">⚠️</span>
+            <div>
+              <span class="font-medium">Benchmarks com Grao de Sal</span>
+              <span class="text-neutral-500 text-sm ml-2">- Performance real vs marketing</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Modelos podem ser fine-tuned para benchmarks especificos. "Melhor em X" pode ser otimizacao para aquele teste.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">A unica performance que importa e a observada empiricamente no seu caso de uso. Nao confie cegamente em rankings.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">PR marketing game | Benchmark fine-tuning | Empirical observation | Your use case matters.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔧</span>
+            <div>
+              <span class="font-medium">Exercicio: Aprenda um Modelo Novo Hoje</span>
+              <span class="text-neutral-500 text-sm ml-2">- Aplicacao pratica</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Escolha modelo que voce nao conhece, use tecnica de deep research, crie guia de prompting, teste com task real.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Praticar o processo completo te torna independente de tutoriais - voce pode aprender qualquer modelo futuro sozinho.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Self-sufficient learning | Research -> Guide -> Test | Future-proof skill.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-3-4.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.5 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.5</span>
+          <span class="text-xs text-neutral-500">~25 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🤖 Criando Custom GPTs e Agentes</h3>
+        <p class="text-neutral-400 text-sm">Transforme seus prompts em assistentes reutilizaveis e agentes autonomos.</p>
+      </div>
+
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🎯</span>
+            <div>
+              <span class="font-medium">Por que Custom GPTs</span>
+              <span class="text-neutral-500 text-sm ml-2">- Prompts persistentes</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Custom GPTs/Claude Projects permitem salvar prompts complexos como assistentes reutilizaveis sem copiar/colar toda vez.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Transforma trabalho de prompting em assets persistentes. Seu "email intern" vira ferramenta permanente.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Persistent prompts | Reusable assets | No copy-paste | System instructions always on.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">📝</span>
+            <div>
+              <span class="font-medium">Instructive Prompts vs Regular</span>
+              <span class="text-neutral-500 text-sm ml-2">- Criando agentes, nao gerando</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Diga "instructive prompt" nao "prompt". AI entende que voce quer criar agente, nao gerar output unico.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Prompts normais geram resposta. Instructive prompts criam comportamento persistente para agente.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">"You are a..." | Behavioral definition | Agent creation | System prompt design.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🔧</span>
+            <div>
+              <span class="font-medium">Estrutura de um Agente</span>
+              <span class="text-neutral-500 text-sm ml-2">- Role, expertise, tasks</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">"You are X, specializing in Y. Your primary role is Z. When user provides A, proceed: 1, 2, 3. Use these templates..."</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Estrutura clara garante comportamento consistente. Agente sabe quem e, o que faz, como faz.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Identity | Expertise | Workflow steps | Template integration | Behavior rules.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">📋</span>
+            <div>
+              <span class="font-medium">Integrando Templates no Agente</span>
+              <span class="text-neutral-500 text-sm ml-2">- Exemplos verbatim</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Inclua templates de formato e exemplos diretamente no prompt do agente. Ele tera acesso sempre.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Templates embutidos garantem consistencia. Agente nao precisa "lembrar" - template esta sempre la.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Embedded templates | Always available | Format consistency | No context loss.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🔄</span>
+            <div>
+              <span class="font-medium">Testando e Iterando</span>
+              <span class="text-neutral-500 text-sm ml-2">- Verificando comportamento</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Apos criar agente, teste com inputs variados. Verifique se aplica regras corretamente. Ajuste e salve novamente.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Agentes podem nao aplicar instrucoes imediatamente - as vezes precisa "update" ou reformular.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Test coverage | Edge cases | Instruction application | Iterative refinement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🔧</span>
+            <div>
+              <span class="font-medium">Exercicio: Crie seu Custom GPT</span>
+              <span class="text-neutral-500 text-sm ml-2">- Agente funcional</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Pegue prompt refinado de exercicios anteriores, converta em Custom GPT/Claude Project, teste com 5 inputs diferentes.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Transforma conhecimento teorico em ferramenta pratica que voce usara no dia-a-dia.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Prompt to Agent | Real deployment | Daily use tool | Practical application.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-3-5.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.6 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.6</span>
+          <span class="text-xs text-neutral-500">~25 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">💼 Business Use Cases</h3>
+        <p class="text-neutral-400 text-sm">Aplicacoes reais de meta prompting em contextos empresariais.</p>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-6.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.7 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.7</span>
+          <span class="text-xs text-neutral-500">~20 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🗜️ Prompt Compression e Variable Tags</h3>
+        <p class="text-neutral-400 text-sm">Tecnicas para comprimir prompts e usar variaveis para customizacao rapida.</p>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-7')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-7.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.8 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.8</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔗 Workflow Completo</h3>
+        <p class="text-neutral-400 text-sm">Integrando todas as tecnicas em um fluxo de trabalho de prompt engineering profissional.</p>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-8')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-8.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODALS -->
+  <!-- Modal 3.1 -->
+  <div id="modal-3-1" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('modal-3-1')"></div>
+      <div class="relative bg-dark-800 rounded-2xl max-w-4xl w-full mx-auto shadow-2xl border border-dark-600 max-h-[85vh] overflow-y-auto">
+        <div class="sticky top-0 bg-dark-800 p-6 border-b border-dark-600 flex justify-between items-center z-10">
+          <h3 class="text-2xl font-bold text-purple-400">3.1 - O que e Meta Prompting</h3>
+          <button onclick="closeModal('modal-3-1')" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+        </div>
+        <div class="p-6 space-y-6">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🎯 Definicao de Meta Prompting</h4>
+            <p class="text-neutral-300 text-sm mb-3">Meta prompting e pedir ao AI para escrever o prompt em si. Voce descreve o que quer e o modelo cria o prompt otimizado para voce.</p>
+            <p class="text-neutral-300 text-sm">E a habilidade que acelera todas as outras - em vez de gastar horas refinando prompts, voce descreve sua intencao e deixa o AI fazer o trabalho pesado.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🎤 Vibe Prompting</h4>
+            <p class="text-neutral-300 text-sm mb-3">Use voz para criar prompts - stream of thought, flow of thought. Falar naturalmente reduz friccao entre o que esta na sua cabeca e o prompt final.</p>
+            <p class="text-neutral-300 text-sm">Voce consegue passar muito mais detalhe falando do que digitando e formatando com acronimos bonitos. O AI transforma sua fala em prompt estruturado.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔄 Scope Creep e Iteracao</h4>
+            <p class="text-neutral-300 text-sm mb-3">Voce pensa que quer X, mas ao ver a resposta percebe que queria Y, Z, A e B. Como cliente de projeto, suas necessidades evoluem ao ver outputs.</p>
+            <p class="text-neutral-300 text-sm">Meta prompting abraca isso - cada iteracao refina o que realmente precisa. O prompt e "proxy" para detalhes que aumentam likelihood de sucesso.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📦 Prompts como Arquivos ZIP</h4>
+            <p class="text-neutral-300 text-sm mb-3">Um prompt bem feito e como um ZIP file - comprime nuances, situacoes, feedbacks de uma conversa inteira em texto reutilizavel.</p>
+            <p class="text-neutral-300 text-sm">Permite transportar conhecimento complexo entre sessoes, projetos e ferramentas. Seu trabalho de refinamento vira IP reutilizavel em Custom GPTs e Claude Projects.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🛠️ Quando Usar Meta Prompting</h4>
+            <p class="text-neutral-300 text-sm mb-3">Use para: criar assistentes personalizados, capturar voz/estilo, workflows repetitivos, dominios especializados onde precisa de multi-shot interno.</p>
+            <p class="text-neutral-300 text-sm">Saber quando aplicar meta prompting vs escrever diretamente economiza tempo e melhora qualidade final.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Exercicio Pratico</h4>
+            <p class="text-neutral-300 text-sm">Descreva uma tarefa que faz frequentemente (responder emails, gerar relatorios, etc). Peca ao AI para criar um prompt otimizado para essa tarefa. Teste, compare com seu metodo manual, e refine.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3.2 -->
+  <div id="modal-3-2" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('modal-3-2')"></div>
+      <div class="relative bg-dark-800 rounded-2xl max-w-4xl w-full mx-auto shadow-2xl border border-dark-600 max-h-[85vh] overflow-y-auto">
+        <div class="sticky top-0 bg-dark-800 p-6 border-b border-dark-600 flex justify-between items-center z-10">
+          <h3 class="text-2xl font-bold text-purple-400">3.2 - Reverse Engineering de Estilo</h3>
+          <button onclick="closeModal('modal-3-2')" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+        </div>
+        <div class="p-6 space-y-6">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📧 O Problema do "Sound Like Me"</h4>
+            <p class="text-neutral-300 text-sm mb-3">A maioria tenta "aqui estao 5 exemplos, soe como eu" - muito simples. Nuances reais do seu estilo requerem processo estruturado.</p>
+            <p class="text-neutral-300 text-sm">Voce nao conhece seu proprio estilo ate alguem (ou algo) analisar externamente. AI pode identificar padroes que voce nunca percebeu que usava.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🎓 O Metodo do "Email Intern"</h4>
+            <p class="text-neutral-300 text-sm mb-3">Imagine treinar um intern novo: mostre emails que recebeu, sua resposta ideal. Peca ao AI gerar resposta, corrija como faria com intern, repita por uma semana.</p>
+            <p class="text-neutral-300 text-sm">Ao final, o AI entende nuances como "friendly conditional statements" (ex: "assuming that goes well...") que voce nem sabia que usava.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📊 Analise de Delta</h4>
+            <p class="text-neutral-300 text-sm mb-3">Apos corrigir resposta do AI, peca analise: "o que mantive, o que mudei, por que". AI aprende seus padroes especificos.</p>
+            <p class="text-neutral-300 text-sm">Delta analysis revela: "encurta sentencas", "usa dashes frequentemente", "assumptive close em calls", "cortesia sem cliche" - seu DNA de escrita.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">💬 Descobertas que AI Encontra</h4>
+            <p class="text-neutral-300 text-sm mb-3">Exemplo real: AI identificou uso de "friendly conditional statements" - frases como "assuming that goes well". Voce nao teria palavras para descrever esse padrao.</p>
+            <p class="text-neutral-300 text-sm">AI tem PhD em linguistica embutido - pode articular padroes que voce usa inconscientemente ha anos.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Reverse Meta Prompt Final</h4>
+            <p class="text-neutral-300 text-sm mb-3">"Act as world-class prompt engineer, analyze all feedback from this thread, create prompt in markdown code block capturing all nuances of my style."</p>
+            <p class="text-neutral-300 text-sm">O prompt resultante inclui: tone of voice, email structure, sections, multi-shot examples - tudo gerado automaticamente do seu feedback.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔁 Iteracao Continua</h4>
+            <p class="text-neutral-300 text-sm">Nomeie o chat "Email Intern", volte sempre que email novo nao for bem respondido. Ajuste, regenere prompt. Em 3-7 dias tera prompt excepcional que captura nuances invisiveis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3.3 -->
+  <div id="modal-3-3" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('modal-3-3')"></div>
+      <div class="relative bg-dark-800 rounded-2xl max-w-4xl w-full mx-auto shadow-2xl border border-dark-600 max-h-[85vh] overflow-y-auto">
+        <div class="sticky top-0 bg-dark-800 p-6 border-b border-dark-600 flex justify-between items-center z-10">
+          <h3 class="text-2xl font-bold text-purple-400">3.3 - Progressive Prompt Engineering</h3>
+          <button onclick="closeModal('modal-3-3')" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+        </div>
+        <div class="p-6 space-y-6">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔄 O Conceito de Progressive PE</h4>
+            <p class="text-neutral-300 text-sm mb-3">Em vez de criar prompt perfeito de uma vez, deixe emergir atraves de uso real, feedback e ajustes continuos.</p>
+            <p class="text-neutral-300 text-sm">Voce nao sabe todas as situacoes que vai enfrentar. Progressive PE se adapta ao mundo real conforme voce usa.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📋 Setup: Preparando a Conversa</h4>
+            <p class="text-neutral-300 text-sm mb-3">"Prepare-se para exemplos. Mostrarei email + resposta AI + meu feedback. Depois testarei voce. Mantenha track das mudancas."</p>
+            <p class="text-neutral-300 text-sm">Setup claro garante que AI entende o processo completo e mantém contexto entre iteracoes.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📝 Fase de Exemplos</h4>
+            <p class="text-neutral-300 text-sm mb-3">Mostre 2-3 emails com suas respostas ideais. AI comeca a identificar padroes empiricos no seu estilo atraves dos exemplos.</p>
+            <p class="text-neutral-300 text-sm">Cada exemplo adiciona dados para o modelo. Mais variedade nos tipos de email = melhor generalizacao.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🎯 Fase de Teste</h4>
+            <p class="text-neutral-300 text-sm mb-3">"Ready for real world - aqui esta email novo, responda baseado no que aprendeu." Depois, corrija e peca analise do delta.</p>
+            <p class="text-neutral-300 text-sm">Teste revela gaps no aprendizado. Cada correcao refina entendimento do modelo sobre seu estilo.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">⚡ Dica: Prep While Waiting</h4>
+            <p class="text-neutral-300 text-sm mb-3">Enquanto AI processa, ja prepare o proximo prompt. Nao va pegar cafe a cada interacao.</p>
+            <p class="text-neutral-300 text-sm">Quality of life hack que reduz tempo total de sessoes de refinamento significativamente. Mantenha flow state.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Desafio: Uma Semana</h4>
+            <p class="text-neutral-300 text-sm">Mantenha chat aberto por 1 semana. Drop emails diarios, corrija respostas, gere prompt final no fim. Resultado: prompt excepcional com nuances que nao conseguiria criar manualmente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3.4 -->
+  <div id="modal-3-4" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('modal-3-4')"></div>
+      <div class="relative bg-dark-800 rounded-2xl max-w-4xl w-full mx-auto shadow-2xl border border-dark-600 max-h-[85vh] overflow-y-auto">
+        <div class="sticky top-0 bg-dark-800 p-6 border-b border-dark-600 flex justify-between items-center z-10">
+          <h3 class="text-2xl font-bold text-purple-400">3.4 - Aprendendo Novos Modelos Rapidamente</h3>
+          <button onclick="closeModal('modal-3-4')" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+        </div>
+        <div class="p-6 space-y-6">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📚 Deep Research com AI</h4>
+            <p class="text-neutral-300 text-sm mb-3">Use Perplexity Pro ou O3 para pesquisar novo modelo: "Full delta comparison vs outros modelos, como promptar, exemplos praticos."</p>
+            <p class="text-neutral-300 text-sm">Nao espere videos no YouTube. Em horas voce pode ter compreensao funcional de modelo recem-lancado como Llama 4.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📄 Fontes Primarias</h4>
+            <p class="text-neutral-300 text-sm mb-3">Va a fonte: perfis de Chief Scientists (Yan LeCun para Meta), sites oficiais, papers de pesquisa. Boring to read, mas de a um LLM para processar.</p>
+            <p class="text-neutral-300 text-sm">Papers revelam design decisions que explicam comportamento do modelo - conhecimento de primeira mao que poucas pessoas tem.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔍 Diferencas de Formato</h4>
+            <p class="text-neutral-300 text-sm mb-3">Cada modelo tem preferencias: Llama prefere XML-like tags e texto blob, OpenAI adora markdown formatado, Claude usa XML estruturado.</p>
+            <p class="text-neutral-300 text-sm">Formato errado = performance suboptima. O mesmo prompt formatado diferente pode ter resultados dramaticamente diferentes.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📊 Side-by-Side Comparison</h4>
+            <p class="text-neutral-300 text-sm mb-3">"Show me side by side: prompt for RAG system in Llama 4 vs Claude vs O3 Mini, optimized for each model."</p>
+            <p class="text-neutral-300 text-sm">Comparacao direta revela diferencas sutis que seriam invisiveis olhando cada modelo separadamente.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">⚠️ Benchmarks com Grao de Sal</h4>
+            <p class="text-neutral-300 text-sm mb-3">Modelos podem ser fine-tuned para benchmarks especificos. "Melhor em X" pode ser otimizacao de marketing para aquele teste.</p>
+            <p class="text-neutral-300 text-sm">A unica performance que importa e a observada empiricamente no SEU caso de uso. Nao confie cegamente em rankings.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Exercicio Pratico</h4>
+            <p class="text-neutral-300 text-sm">Escolha modelo que voce nao conhece (Mistral, Gemini, Llama). Use tecnica de deep research, crie seu proprio guia de prompting, teste com task real que voce faz frequentemente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3.5 -->
+  <div id="modal-3-5" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('modal-3-5')"></div>
+      <div class="relative bg-dark-800 rounded-2xl max-w-4xl w-full mx-auto shadow-2xl border border-dark-600 max-h-[85vh] overflow-y-auto">
+        <div class="sticky top-0 bg-dark-800 p-6 border-b border-dark-600 flex justify-between items-center z-10">
+          <h3 class="text-2xl font-bold text-purple-400">3.5 - Criando Custom GPTs e Agentes</h3>
+          <button onclick="closeModal('modal-3-5')" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+        </div>
+        <div class="p-6 space-y-6">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🎯 Por que Custom GPTs</h4>
+            <p class="text-neutral-300 text-sm mb-3">Custom GPTs e Claude Projects permitem salvar prompts complexos como assistentes reutilizaveis sem copiar/colar toda vez.</p>
+            <p class="text-neutral-300 text-sm">Transforma trabalho de prompting em assets persistentes. Seu "email intern" treinado vira ferramenta permanente.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📝 Instructive Prompts vs Regular</h4>
+            <p class="text-neutral-300 text-sm mb-3">Diga "instructive prompt" nao apenas "prompt". AI entende que voce quer criar agente com comportamento persistente, nao gerar output unico.</p>
+            <p class="text-neutral-300 text-sm">Prompts normais geram resposta. Instructive prompts definem comportamento: "You are X, when user does Y, you do Z..."</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Estrutura de um Agente</h4>
+            <p class="text-neutral-300 text-sm mb-3">"You are X, specializing in Y. Your primary role is Z. When user provides A, proceed: 1, 2, 3. Use these templates..."</p>
+            <p class="text-neutral-300 text-sm">Estrutura clara garante comportamento consistente. Agente sabe quem e, o que faz, como faz.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📋 Templates Embutidos</h4>
+            <p class="text-neutral-300 text-sm mb-3">Inclua templates de formato e exemplos diretamente no prompt do agente. Ele tera acesso sempre, sem perder contexto.</p>
+            <p class="text-neutral-300 text-sm">Templates embutidos garantem consistencia. Agente nao precisa "lembrar" formato - template esta sempre disponivel.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔄 Testando e Iterando</h4>
+            <p class="text-neutral-300 text-sm mb-3">Apos criar agente, teste com inputs variados. Verifique se aplica regras corretamente. As vezes precisa "update" ou reformular instrucoes.</p>
+            <p class="text-neutral-300 text-sm">Agentes podem nao aplicar instrucoes imediatamente - teste edge cases e refine ate comportamento consistente.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Exercicio Pratico</h4>
+            <p class="text-neutral-300 text-sm">Pegue prompt refinado dos modulos anteriores, converta em Custom GPT ou Claude Project. Teste com 5 inputs bem diferentes para verificar consistencia.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3.6 -->
+  <div id="modal-3-6" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('modal-3-6')"></div>
+      <div class="relative bg-dark-800 rounded-2xl max-w-4xl w-full mx-auto shadow-2xl border border-dark-600 max-h-[85vh] overflow-y-auto">
+        <div class="sticky top-0 bg-dark-800 p-6 border-b border-dark-600 flex justify-between items-center z-10">
+          <h3 class="text-2xl font-bold text-purple-400">3.6 - Business Use Cases</h3>
+          <button onclick="closeModal('modal-3-6')" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+        </div>
+        <div class="p-6 space-y-6">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📧 Email Automation</h4>
+            <p class="text-neutral-300 text-sm mb-3">Crie agente que responde emails no seu estilo. Integre com Make.com/N8N para processar inbox automaticamente.</p>
+            <p class="text-neutral-300 text-sm">Caso de uso mais comum: email recebido -> AI gera draft -> voce aprova/edita -> envia. Economiza horas por semana.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📊 Lead Qualification</h4>
+            <p class="text-neutral-300 text-sm mb-3">Analise emails de prospectos para qualificar leads. AI extrai: urgencia, budget signals, fit com seu servico, proximos passos sugeridos.</p>
+            <p class="text-neutral-300 text-sm">Integra com CRM para scoring automatico e priorizacao de follow-ups.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📝 Content Generation</h4>
+            <p class="text-neutral-300 text-sm mb-3">Newsletters, social media, blog posts no seu estilo. Treine agente com exemplos do seu conteudo anterior.</p>
+            <p class="text-neutral-300 text-sm">Gere drafts que precisam minima edicao, mantendo sua voz e perspectiva unicas.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔍 Data Strategy</h4>
+            <p class="text-neutral-300 text-sm mb-3">Analise de dados para AI implementation. Agentes que fazem assessment inicial de readiness para projetos de AI.</p>
+            <p class="text-neutral-300 text-sm">Automatize discovery calls iniciais com questionarios inteligentes.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🛠️ Prototyping Rapido</h4>
+            <p class="text-neutral-300 text-sm mb-3">Use agentes para prototipar tools antes de implementar. Teste logica de negocio conversando com AI antes de codificar.</p>
+            <p class="text-neutral-300 text-sm">Valide casos de uso com stakeholders usando demos conversacionais.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Sales Automation</h4>
+            <p class="text-neutral-300 text-sm">Insights automatizados para vendas: analise de calls, sugestao de talking points, follow-up emails personalizados baseados em conversa anterior.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3.7 -->
+  <div id="modal-3-7" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('modal-3-7')"></div>
+      <div class="relative bg-dark-800 rounded-2xl max-w-4xl w-full mx-auto shadow-2xl border border-dark-600 max-h-[85vh] overflow-y-auto">
+        <div class="sticky top-0 bg-dark-800 p-6 border-b border-dark-600 flex justify-between items-center z-10">
+          <h3 class="text-2xl font-bold text-purple-400">3.7 - Prompt Compression e Variable Tags</h3>
+          <button onclick="closeModal('modal-3-7')" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+        </div>
+        <div class="p-6 space-y-6">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📦 O que e Prompt Compression</h4>
+            <p class="text-neutral-300 text-sm mb-3">Tecnica de condensar prompts longos em versoes menores sem perder eficacia. Menos tokens = mais rapido e barato.</p>
+            <p class="text-neutral-300 text-sm">AI pode ajudar a comprimir: "Rewrite this prompt to be 50% shorter while maintaining all functionality."</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🏷️ Variable Tags Explicadas</h4>
+            <p class="text-neutral-300 text-sm mb-3">Placeholders como {CUSTOMER_NAME}, {PRODUCT}, {TONE} que voce preenche antes de usar. Torna prompts reutilizaveis.</p>
+            <p class="text-neutral-300 text-sm">Coloque variaveis no FINAL do prompt (recency bias) com definicoes claras: "CUSTOMER_NAME = Joao Silva"</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📍 Posicionamento de Variaveis</h4>
+            <p class="text-neutral-300 text-sm mb-3">Variaveis no final aproveitam recency bias. Modelo presta mais atencao ao fim do prompt.</p>
+            <p class="text-neutral-300 text-sm">Formato: prompt completo primeiro, depois bloco de variaveis com valores atuais.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔄 Easy to Manipulate</h4>
+            <p class="text-neutral-300 text-sm mb-3">"Make prompts easy to customize and easy to change and evaluate" - variaveis permitem isso sem editar corpo do prompt.</p>
+            <p class="text-neutral-300 text-sm">Mude so os valores das variaveis para adaptar a diferentes contextos.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📝 Unformatted Markdown</h4>
+            <p class="text-neutral-300 text-sm mb-3">Sempre peca output "in unformatted markdown in a code block so I can easily copy-paste".</p>
+            <p class="text-neutral-300 text-sm">Evita problemas de formatacao spillover entre texto e code blocks.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Exercicio Pratico</h4>
+            <p class="text-neutral-300 text-sm">Pegue prompt longo que voce usa, identifique partes que mudam (nomes, contexto, tom), substitua por variaveis, crie bloco de variaveis no final.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3.8 -->
+  <div id="modal-3-8" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('modal-3-8')"></div>
+      <div class="relative bg-dark-800 rounded-2xl max-w-4xl w-full mx-auto shadow-2xl border border-dark-600 max-h-[85vh] overflow-y-auto">
+        <div class="sticky top-0 bg-dark-800 p-6 border-b border-dark-600 flex justify-between items-center z-10">
+          <h3 class="text-2xl font-bold text-purple-400">3.8 - Workflow Completo</h3>
+          <button onclick="closeModal('modal-3-8')" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+        </div>
+        <div class="p-6 space-y-6">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔄 O Ciclo Completo</h4>
+            <p class="text-neutral-300 text-sm mb-3">1. Vibe prompt inicial -> 2. Exemplos e feedback -> 3. Reverse meta prompt -> 4. Custom GPT -> 5. Iteracao continua</p>
+            <p class="text-neutral-300 text-sm">Cada etapa constroi sobre a anterior. O workflow inteiro leva ~1 semana para dominar completamente.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">📋 Fase 1: Discovery</h4>
+            <p class="text-neutral-300 text-sm mb-3">Comece com vibe prompting - fale naturalmente sobre o que quer. Nao se preocupe com formato ainda.</p>
+            <p class="text-neutral-300 text-sm">Objetivo: capturar intencao e contexto de forma rica e detalhada.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🎓 Fase 2: Training</h4>
+            <p class="text-neutral-300 text-sm mb-3">Email intern method - exemplos, testes, correcoes. Construa IP no chat atraves de feedback real.</p>
+            <p class="text-neutral-300 text-sm">Objetivo: ensinar nuances que voce nao consegue articular diretamente.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Fase 3: Extraction</h4>
+            <p class="text-neutral-300 text-sm mb-3">Reverse meta prompt - transforme toda conversa em prompt comprimido com variaveis.</p>
+            <p class="text-neutral-300 text-sm">Objetivo: criar artifact reutilizavel que capture todo aprendizado.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🤖 Fase 4: Deployment</h4>
+            <p class="text-neutral-300 text-sm mb-3">Custom GPT ou Claude Project - transforme prompt em agente persistente.</p>
+            <p class="text-neutral-300 text-sm">Objetivo: ter ferramenta pronta para uso diario sem setup repetitivo.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔁 Fase 5: Evolution</h4>
+            <p class="text-neutral-300 text-sm">Mantenha chat de treinamento aberto. Volte quando encontrar casos nao cobertos. Regenere prompt. Atualize agente. Repeat.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row justify-between items-center">
+        <div class="text-neutral-500 text-sm mb-4 sm:mb-0">
+          &copy; 2026 Prompt Engineering Masterclass
+        </div>
+        <div class="flex items-center space-x-6">
+          <a href="../trilha1/index.html" class="text-emerald-400 hover:text-emerald-300 text-sm">Trilha 1</a>
+          <a href="../trilha2/index.html" class="text-blue-400 hover:text-blue-300 text-sm">Trilha 2</a>
+          <a href="index.html" class="text-purple-400 font-semibold text-sm">Trilha 3</a>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm">INEMA.CLUB</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+    function updateIcons() {
+      if (document.documentElement.classList.contains('dark')) {
+        lightIcon.classList.remove('hidden');
+        darkIcon.classList.add('hidden');
+      } else {
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+      }
+    }
+
+    // Check localStorage
+    if (localStorage.getItem('color-theme') === 'light') {
+      document.documentElement.classList.remove('dark');
+    }
+    updateIcons();
+
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      updateIcons();
+    });
+
+    // Topic Toggle
+    function toggleTopic(button) {
+      const explanation = button.nextElementSibling;
+      explanation.classList.toggle('active');
+    }
+
+    // Modal Functions
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('[id^="modal-"]').forEach(modal => {
+          modal.classList.add('hidden');
+        });
+        document.body.style.overflow = 'auto';
+      }
+    });
+  </script>
+
+</body>
+</html>

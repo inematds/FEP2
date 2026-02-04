@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.5 - Criando Custom GPTs e Agentes | Trilha 3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-content { display: none; }
+    .topic-content.active { display: block; }
+    html:not(.dark) body { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%); }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Prompt Engineering</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">Trilha 3</a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-8 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <a href="index.html" class="text-purple-400 text-sm hover:text-purple-300 mb-4 inline-block">&larr; Voltar para Trilha 3</a>
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-bold rounded">3.5</span>
+        <span class="text-neutral-500 text-sm">~25 min</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">🤖 Criando Custom GPTs e Agentes</h1>
+      <p class="text-neutral-400">Transforme seus prompts em assistentes reutilizaveis e agentes autonomos.</p>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- TOPICO 1 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Por que Custom GPTs</h3>
+          <p class="text-neutral-400 text-sm">Prompts persistentes e reutilizaveis</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Problema</h4>
+            <p class="text-neutral-300 text-sm">Voce criou um prompt incrivel depois de dias de refinamento. Agora precisa copiar/colar toda vez que usa. Ou pior - perde o prompt.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">A Solucao</h4>
+            <p class="text-neutral-300 text-sm mb-3">Custom GPTs (OpenAI) e Claude Projects (Anthropic) permitem:</p>
+            <ul class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-green-400">✓</span>
+                <span>Salvar prompts como assistentes permanentes</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-green-400">✓</span>
+                <span>System instructions sempre ativas</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-green-400">✓</span>
+                <span>Sem copiar/colar</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-green-400">✓</span>
+                <span>Compartilhar com equipe</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Transformando Trabalho em Asset</h4>
+            <p class="text-neutral-300 text-sm">Seu "email intern" treinado por uma semana vira ferramenta permanente. O trabalho de refinamento se torna IP reutilizavel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 2 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Instructive Prompts vs Regular</h3>
+          <p class="text-neutral-400 text-sm">Criando agentes, nao gerando outputs</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">A Diferenca Crucial</h4>
+            <p class="text-neutral-300 text-sm">Diga "instructive prompt" nao apenas "prompt". AI entende que voce quer criar agente com comportamento persistente, nao gerar output unico.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Comparacao</h4>
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-purple-400">Prompt Regular</th>
+                  <th class="text-left py-2 text-purple-400">Instructive Prompt</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2">"Write an email about..."</td>
+                  <td class="py-2">"You are an email expert..."</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2">Gera uma resposta</td>
+                  <td class="py-2">Define comportamento</td>
+                </tr>
+                <tr>
+                  <td class="py-2">Uso unico</td>
+                  <td class="py-2">Uso repetido</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Exemplo de Instructive Prompt</h4>
+            <div class="bg-dark-900 rounded p-3">
+              <code class="text-purple-300 text-xs">"You are a customized AI agent optimized for [task]. Your primary role is to take instructions in natural language and [do X]. When user provides [input], proceed as follows: 1... 2... 3..."</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 3 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Estrutura de um Agente</h3>
+          <p class="text-neutral-400 text-sm">Role, expertise, tasks - os blocos fundamentais</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Os 5 Blocos</h4>
+            <ol class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">1.</span>
+                <span><strong>Identity:</strong> "You are X, specializing in Y"</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">2.</span>
+                <span><strong>Role:</strong> "Your primary role is to..."</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">3.</span>
+                <span><strong>Workflow:</strong> "When user provides X, proceed: 1, 2, 3"</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">4.</span>
+                <span><strong>Templates:</strong> Exemplos e formatos embutidos</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">5.</span>
+                <span><strong>Rules:</strong> Comportamentos a seguir/evitar</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Exemplo Completo</h4>
+            <div class="bg-dark-900 rounded p-3 text-xs">
+              <p class="text-purple-300 mb-2">You are an email expert assistant tasked with crafting professional yet conversational emails on behalf of [User].</p>
+              <p class="text-purple-300 mb-2">Your responses must precisely mirror [User]'s distinctive style:</p>
+              <p class="text-neutral-400 mb-2">- Tone of voice: [details]</p>
+              <p class="text-neutral-400 mb-2">- Email structure: [details]</p>
+              <p class="text-purple-300 mb-2">When provided with an incoming email, proceed as follows:</p>
+              <p class="text-neutral-400">1. Analyze the request type<br/>2. Apply appropriate template<br/>3. Generate response in user's style</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 4 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Integrando Templates no Agente</h3>
+          <p class="text-neutral-400 text-sm">Exemplos verbatim sempre disponiveis</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Por que Templates Embutidos</h4>
+            <p class="text-neutral-300 text-sm">Inclua templates de formato e exemplos diretamente no prompt do agente. Ele tera acesso sempre, sem perder contexto entre sessoes.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Exemplo de Template Section</h4>
+            <div class="bg-dark-900 rounded p-3 text-xs">
+              <p class="text-purple-300 mb-2">## Templates by Situation:</p>
+              <p class="text-neutral-400 mb-1"><strong>New Client Inquiry:</strong></p>
+              <p class="text-neutral-400 mb-2">"Thanks for reaching out! Great to hear from you..."</p>
+              <p class="text-neutral-400 mb-1"><strong>Follow-up:</strong></p>
+              <p class="text-neutral-400 mb-2">"Just checking in on our previous conversation..."</p>
+              <p class="text-neutral-400 mb-1"><strong>Meeting Request:</strong></p>
+              <p class="text-neutral-400">"I'd love to dig deeper on a call. When works for you?"</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Multi-shot Automatico</h4>
+            <p class="text-neutral-300 text-sm">AI e smart o suficiente para incluir exemplos automaticamente quando gera o prompt. Voce nao precisa estruturar - ele sabe que multi-shot melhora resultados.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 5 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Testando e Iterando</h3>
+          <p class="text-neutral-400 text-sm">Verificando comportamento do agente</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Processo de Teste</h4>
+            <ol class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">1.</span>
+                <span>Crie o Custom GPT com seu prompt</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">2.</span>
+                <span>Teste com input simples</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">3.</span>
+                <span>Teste com edge cases</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">4.</span>
+                <span>Verifique se regras sao aplicadas</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">5.</span>
+                <span>Ajuste e salve novamente</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Problema Comum</h4>
+            <p class="text-neutral-300 text-sm mb-2">Agentes podem nao aplicar instrucoes imediatamente. Causas:</p>
+            <ul class="text-neutral-300 text-sm space-y-1">
+              <li>• Instrucoes muito vagas</li>
+              <li>• Conflito com comportamento default</li>
+              <li>• Precisa "update" apos salvar</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Dica: Force Apply</h4>
+            <p class="text-neutral-300 text-sm">Se instrucoes nao estao sendo seguidas, adicione "CRITICAL:" ou "ALWAYS:" antes da regra. Ou reformule como negativa: "NEVER do X" em vez de "try to avoid X".</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 6 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Exercicio: Crie seu Custom GPT</h3>
+          <p class="text-neutral-400 text-sm">Transformando prompt em agente funcional</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 O Exercicio</h4>
+            <p class="text-neutral-300 text-sm">Pegue prompt refinado dos modulos anteriores (email, escrita, etc) e converta em Custom GPT ou Claude Project funcional.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Passo a Passo</h4>
+            <ol class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">1.</span>
+                <span>Va em ChatGPT > Explore GPTs > Create</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">2.</span>
+                <span>Cole seu prompt nas Instructions</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">3.</span>
+                <span>De um nome descritivo</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">4.</span>
+                <span>Salve e teste com 5 inputs diferentes</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">5.</span>
+                <span>Ajuste baseado nos resultados</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Inputs de Teste</h4>
+            <ul class="text-neutral-300 text-sm space-y-1">
+              <li>• Caso normal/comum</li>
+              <li>• Caso complexo</li>
+              <li>• Caso ambiguo</li>
+              <li>• Caso fora do escopo</li>
+              <li>• Caso que precisa de format especifico</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Resultado</h4>
+            <p class="text-neutral-300 text-sm">Ferramenta pratica que voce usara no dia-a-dia. Conhecimento teorico transformado em asset funcional.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="flex justify-between items-center mt-8 pt-6 border-t border-dark-600">
+      <a href="modulo-3-4.html" class="text-neutral-400 hover:text-purple-400">&larr; Novos Modelos</a>
+      <a href="modulo-3-6.html" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg">Proximo: Business Cases &rarr;</a>
+    </div>
+  </main>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    function updateIcons() {
+      if (document.documentElement.classList.contains('dark')) {
+        lightIcon.classList.remove('hidden');
+        darkIcon.classList.add('hidden');
+      } else {
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+      }
+    }
+    if (localStorage.getItem('color-theme') === 'light') {
+      document.documentElement.classList.remove('dark');
+    }
+    updateIcons();
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      updateIcons();
+    });
+    function toggleContent(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('span:last-child');
+      content.classList.toggle('active');
+      icon.textContent = content.classList.contains('active') ? '−' : '+';
+    }
+  </script>
+</body>
+</html>

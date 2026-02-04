@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.6 - Business Use Cases | Trilha 3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-content { display: none; }
+    .topic-content.active { display: block; }
+    html:not(.dark) body { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%); }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Prompt Engineering</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">Trilha 3</a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-8 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <a href="index.html" class="text-purple-400 text-sm hover:text-purple-300 mb-4 inline-block">&larr; Voltar para Trilha 3</a>
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-bold rounded">3.6</span>
+        <span class="text-neutral-500 text-sm">~25 min</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">💼 Business Use Cases</h1>
+      <p class="text-neutral-400">Aplicacoes reais de meta prompting em contextos empresariais.</p>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- TOPICO 1 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Email Automation</h3>
+          <p class="text-neutral-400 text-sm">Respostas automaticas no seu estilo</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Caso de Uso</h4>
+            <p class="text-neutral-300 text-sm">Crie agente que responde emails no seu estilo pessoal. Integre com Make.com ou N8N para processar inbox automaticamente.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Workflow Tipico</h4>
+            <div class="flex flex-col space-y-2">
+              <div class="flex items-center space-x-3">
+                <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center">1</span>
+                <span class="text-neutral-300 text-sm">Email chega na inbox</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center">2</span>
+                <span class="text-neutral-300 text-sm">Trigger no Make.com/N8N</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center">3</span>
+                <span class="text-neutral-300 text-sm">AI gera draft de resposta</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center">4</span>
+                <span class="text-neutral-300 text-sm">Voce aprova/edita rapidamente</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center">5</span>
+                <span class="text-neutral-300 text-sm">Envia automaticamente</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">ROI</h4>
+            <p class="text-neutral-300 text-sm">Se voce gasta 2h/dia em emails, 30% de automacao = 3.5h/semana recuperadas. Em um ano: 180+ horas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 2 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Lead Qualification</h3>
+          <p class="text-neutral-400 text-sm">Analise automatica de prospectos</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Que Extrair</h4>
+            <p class="text-neutral-300 text-sm">Analise emails de prospectos para qualificar leads automaticamente, extraindo sinais criticos.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Sinais de Qualificacao</h4>
+            <ul class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-green-400">$</span>
+                <span><strong>Budget signals:</strong> "we have budget for Q1"</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-yellow-400">⚡</span>
+                <span><strong>Urgencia:</strong> "need to implement ASAP"</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">🎯</span>
+                <span><strong>Fit:</strong> menciona problemas que voce resolve</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-blue-400">👤</span>
+                <span><strong>Authority:</strong> titulo do remetente</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Output Estruturado</h4>
+            <div class="bg-dark-900 rounded p-3 text-xs">
+              <p class="text-purple-300">Lead Score: 8/10</p>
+              <p class="text-neutral-400">Urgencia: Alta</p>
+              <p class="text-neutral-400">Budget: Indicado</p>
+              <p class="text-neutral-400">Fit: Excelente</p>
+              <p class="text-neutral-400">Proximos passos: Agendar call esta semana</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 3 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Content Generation</h3>
+          <p class="text-neutral-400 text-sm">Newsletters, posts, blog no seu estilo</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Desafio</h4>
+            <p class="text-neutral-300 text-sm">Conteudo gerado por AI soa generico. Voce precisa de drafts que capturam SUA voz, perspectiva e estilo unicos.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Tipos de Conteudo</h4>
+            <ul class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">📧</span>
+                <span>Newsletters semanais</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">📱</span>
+                <span>Posts LinkedIn/Twitter</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">📝</span>
+                <span>Blog posts</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">🎥</span>
+                <span>Scripts de video</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Processo</h4>
+            <ol class="text-neutral-300 text-sm space-y-1">
+              <li>1. Treine agente com 10-20 exemplos do seu conteudo</li>
+              <li>2. Inclua guidelines de tom, formato, tamanho</li>
+              <li>3. Gere drafts que precisam minima edicao</li>
+              <li>4. Refine com feedback continuo</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 4 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Data Strategy Assessment</h3>
+          <p class="text-neutral-400 text-sm">Avaliacoes automatizadas de AI readiness</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Caso de Uso</h4>
+            <p class="text-neutral-300 text-sm">Crie agente que faz assessment inicial de projetos de AI, identificando gaps e oportunidades antes da discovery call.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Perguntas do Assessment</h4>
+            <ul class="text-neutral-300 text-sm space-y-1">
+              <li>• Qual problema de negocio voce quer resolver?</li>
+              <li>• Que dados voce tem disponiveis?</li>
+              <li>• Qual infraestrutura atual?</li>
+              <li>• Quem vai usar a solucao?</li>
+              <li>• Qual timeline esperado?</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Output do Agente</h4>
+            <p class="text-neutral-300 text-sm mb-2">Report estruturado com:</p>
+            <ul class="text-neutral-300 text-sm space-y-1">
+              <li>✓ AI Readiness Score</li>
+              <li>✓ Gaps identificados</li>
+              <li>✓ Quick wins possiveis</li>
+              <li>✓ Recomendacoes iniciais</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 5 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Prototyping Rapido</h3>
+          <p class="text-neutral-400 text-sm">Validando ideias antes de implementar</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">A Ideia</h4>
+            <p class="text-neutral-300 text-sm">Use agentes para prototipar tools/features antes de codificar. Teste logica de negocio conversando com AI.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Exemplos de Prototipagem</h4>
+            <ul class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">🤖</span>
+                <span>Chatbot de suporte antes de implementar</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">📋</span>
+                <span>Workflow de onboarding antes de automacao</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">📊</span>
+                <span>Report generator antes de dashboard</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Validacao com Stakeholders</h4>
+            <p class="text-neutral-300 text-sm">Mostre demo conversacional para stakeholders. Colete feedback antes de investir em desenvolvimento. Falha rapida e barata.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 6 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Sales Automation</h3>
+          <p class="text-neutral-400 text-sm">Insights e follow-ups automatizados</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Stack Completo</h4>
+            <p class="text-neutral-300 text-sm">Integre meta prompting em todo ciclo de vendas - da prospeccao ao follow-up pos-venda.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Aplicacoes em Vendas</h4>
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-purple-400">Fase</th>
+                  <th class="text-left py-2 text-purple-400">Automacao</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2">Prospeccao</td>
+                  <td class="py-2">Research automatico de leads</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2">Outreach</td>
+                  <td class="py-2">Emails personalizados em escala</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2">Discovery</td>
+                  <td class="py-2">Prep de call com insights</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2">Follow-up</td>
+                  <td class="py-2">Emails pos-call customizados</td>
+                </tr>
+                <tr>
+                  <td class="py-2">Pos-venda</td>
+                  <td class="py-2">Check-ins automaticos</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 Exercicio</h4>
+            <p class="text-neutral-300 text-sm">Escolha UM caso de uso desta lista. Crie agente especializado. Use por 1 semana. Meça tempo economizado.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="flex justify-between items-center mt-8 pt-6 border-t border-dark-600">
+      <a href="modulo-3-5.html" class="text-neutral-400 hover:text-purple-400">&larr; Custom GPTs</a>
+      <a href="modulo-3-7.html" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg">Proximo: Prompt Compression &rarr;</a>
+    </div>
+  </main>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    function updateIcons() {
+      if (document.documentElement.classList.contains('dark')) {
+        lightIcon.classList.remove('hidden');
+        darkIcon.classList.add('hidden');
+      } else {
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+      }
+    }
+    if (localStorage.getItem('color-theme') === 'light') {
+      document.documentElement.classList.remove('dark');
+    }
+    updateIcons();
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      updateIcons();
+    });
+    function toggleContent(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('span:last-child');
+      content.classList.toggle('active');
+      icon.textContent = content.classList.contains('active') ? '−' : '+';
+    }
+  </script>
+</body>
+</html>

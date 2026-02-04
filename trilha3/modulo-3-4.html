@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.4 - Aprendendo Novos Modelos Rapidamente | Trilha 3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-content { display: none; }
+    .topic-content.active { display: block; }
+    html:not(.dark) body { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%); }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Prompt Engineering</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">Trilha 3</a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-8 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <a href="index.html" class="text-purple-400 text-sm hover:text-purple-300 mb-4 inline-block">&larr; Voltar para Trilha 3</a>
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-bold rounded">3.4</span>
+        <span class="text-neutral-500 text-sm">~30 min</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">🚀 Aprendendo Novos Modelos Rapidamente</h1>
+      <p class="text-neutral-400">Tecnicas para dominar qualquer novo modelo em horas, nao semanas.</p>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- TOPICO 1 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Deep Research com AI</h3>
+          <p class="text-neutral-400 text-sm">Usando Perplexity/O3 para aprender modelos novos</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Prompt de Pesquisa</h4>
+            <div class="bg-dark-900 rounded p-3">
+              <code class="text-purple-300 text-xs">"Do deep research about [novo modelo]. I have no idea how to prompt it. Give me: full delta comparison vs other models, prompting differences, nuances, and examples of how to prompt it."</code>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Por que Funciona</h4>
+            <ul class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Perplexity/O3 crawlam fontes recentes</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Sintetizam papers e documentacao</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Comparam com modelos que voce ja conhece</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Criam study guide personalizado</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Exemplo: Llama 4</h4>
+            <p class="text-neutral-300 text-sm">Modelo lancou hoje? Em horas voce pode ter compreensao funcional sem esperar videos no YouTube ou cursos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 2 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Fontes Primarias</h3>
+          <p class="text-neutral-400 text-sm">Papers e documentacao oficial</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Onde Encontrar</h4>
+            <ul class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">📄</span>
+                <span><strong>Meta/Llama:</strong> Yan LeCun no LinkedIn, llama.meta.com</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">📄</span>
+                <span><strong>OpenAI:</strong> openai.com/research, papers</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">📄</span>
+                <span><strong>Anthropic:</strong> anthropic.com/research</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">📄</span>
+                <span><strong>Google:</strong> DeepMind blog, Gemini docs</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Como Processar Papers</h4>
+            <p class="text-neutral-300 text-sm mb-3">Papers sao chatos de ler, mas ricos em informacao. Use AI para processar:</p>
+            <div class="bg-dark-900 rounded p-3">
+              <code class="text-purple-300 text-xs">"Here's the Llama 4 paper. Extract: key architectural differences, prompting implications, and format preferences."</code>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Por que Papers Importam</h4>
+            <p class="text-neutral-300 text-sm">Papers revelam design decisions que explicam comportamento do modelo. Conhecimento de primeira mao que poucas pessoas tem.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 3 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Diferencas de Formato</h3>
+          <p class="text-neutral-400 text-sm">XML, markdown, blob text - cada modelo tem preferencias</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Preferencias por Modelo</h4>
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-purple-400">Modelo</th>
+                  <th class="text-left py-2 text-purple-400">Formato Preferido</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2">OpenAI (GPT-4)</td>
+                  <td class="py-2">Markdown formatado</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2">Claude</td>
+                  <td class="py-2">XML tags estruturadas</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2">Llama 4</td>
+                  <td class="py-2">XML-like tags, texto blob</td>
+                </tr>
+                <tr>
+                  <td class="py-2">Gemini</td>
+                  <td class="py-2">Markdown + structured</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Por que Formato Importa</h4>
+            <p class="text-neutral-300 text-sm">Formato errado = performance suboptima. O mesmo prompt formatado diferente pode ter resultados dramaticamente diferentes.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Exemplo Llama 4</h4>
+            <div class="bg-dark-900 rounded p-3">
+              <code class="text-purple-300 text-xs">&lt;system&gt;You are...&lt;/system&gt;<br/>&lt;context&gt;Reference data...&lt;/context&gt;<br/>&lt;task&gt;Do X...&lt;/task&gt;</code>
+            </div>
+            <p class="text-neutral-400 text-xs mt-2">Llama prefere estrutura XML-like e texto contínuo vs markdown headers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 4 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Side-by-Side Comparison</h3>
+          <p class="text-neutral-400 text-sm">Mesma task, modelos diferentes</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Prompt de Comparacao</h4>
+            <div class="bg-dark-900 rounded p-3">
+              <code class="text-purple-300 text-xs">"Show me side by side: optimized prompt for [task] in Llama 4 vs Claude vs O3 Mini. Highlight key differences in structure and format."</code>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O que Observar</h4>
+            <ul class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">👀</span>
+                <span>Diferenca de tamanho dos prompts</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">👀</span>
+                <span>Estrutura (headers, tags, plain text)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">👀</span>
+                <span>Nivel de handholding necessario</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">👀</span>
+                <span>Onde colocar contexto/exemplos</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Insight Chave</h4>
+            <p class="text-neutral-300 text-sm">Comparacao direta revela diferencas sutis que seriam invisiveis olhando cada modelo separadamente. Llama 4 precisa mais contexto que O3 porque nao e reasoning model.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 5 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Benchmarks com Grao de Sal</h3>
+          <p class="text-neutral-400 text-sm">Performance real vs marketing</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">⚠️ Aviso Importante</h4>
+            <p class="text-neutral-300 text-sm">Modelos podem ser fine-tuned para benchmarks especificos. "Melhor em X" pode ser otimizacao de marketing para aquele teste particular.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Jogo de PR</h4>
+            <ul class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-red-400">!</span>
+                <span>Fine-tune para benchmark especifico</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-red-400">!</span>
+                <span>Escolha benchmarks favoraveis</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-red-400">!</span>
+                <span>Ignore areas fracas nos anuncios</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-red-400">!</span>
+                <span>Rankings mudam com cada release</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">A Unica Metrica que Importa</h4>
+            <p class="text-neutral-300 text-sm mb-2">Performance observada empiricamente no SEU caso de uso. Teste voce mesmo:</p>
+            <ol class="text-neutral-300 text-sm space-y-1">
+              <li>1. Escolha 3-5 tasks reais que voce faz</li>
+              <li>2. Teste no modelo novo</li>
+              <li>3. Compare com modelo atual</li>
+              <li>4. Decida baseado em dados, nao hype</li>
+            </ol>
+          </div>
+
+          <div class="bg-dark-900 rounded-lg p-4 border border-purple-500/30">
+            <p class="text-purple-400 font-semibold text-sm mb-1">Regra de Ouro</p>
+            <p class="text-neutral-300 text-sm">"99.9% das vezes e skill issue se resultados sao ruins com modelo 'melhor'. Voce precisa saber promptar o modelo antes de avaliar."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 6 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Exercicio: Aprenda um Modelo Novo Hoje</h3>
+          <p class="text-neutral-400 text-sm">Aplicacao pratica do metodo</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 O Desafio</h4>
+            <p class="text-neutral-300 text-sm">Escolha modelo que voce nao conhece bem: Mistral, Gemini 2.5, Llama, Command R+. Aplique o metodo completo.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Passo a Passo</h4>
+            <ol class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">1.</span>
+                <span>Deep research com Perplexity (20 min)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">2.</span>
+                <span>Encontre paper/docs oficiais (10 min)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">3.</span>
+                <span>Peca comparacao side-by-side (15 min)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">4.</span>
+                <span>Crie seu guia de prompting (20 min)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">5.</span>
+                <span>Teste com task real que voce faz (15 min)</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Resultado</h4>
+            <p class="text-neutral-300 text-sm">Em ~1.5 horas voce tera compreensao funcional de modelo que outras pessoas levarao semanas para entender. Skill que torna voce independente de tutoriais.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Future-Proof</h4>
+            <p class="text-neutral-300 text-sm">Praticar o processo completo te torna capaz de aprender qualquer modelo futuro sozinho. Modelos novos lancam toda semana - essa skill e invaluavel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="flex justify-between items-center mt-8 pt-6 border-t border-dark-600">
+      <a href="modulo-3-3.html" class="text-neutral-400 hover:text-purple-400">&larr; Progressive PE</a>
+      <a href="modulo-3-5.html" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg">Proximo: Custom GPTs &rarr;</a>
+    </div>
+  </main>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    function updateIcons() {
+      if (document.documentElement.classList.contains('dark')) {
+        lightIcon.classList.remove('hidden');
+        darkIcon.classList.add('hidden');
+      } else {
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+      }
+    }
+    if (localStorage.getItem('color-theme') === 'light') {
+      document.documentElement.classList.remove('dark');
+    }
+    updateIcons();
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      updateIcons();
+    });
+    function toggleContent(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('span:last-child');
+      content.classList.toggle('active');
+      icon.textContent = content.classList.contains('active') ? '−' : '+';
+    }
+  </script>
+</body>
+</html>

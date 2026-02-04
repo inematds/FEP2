@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.7 - Prompt Compression e Variable Tags | Trilha 3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-content { display: none; }
+    .topic-content.active { display: block; }
+    html:not(.dark) body { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%); }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Prompt Engineering</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">Trilha 3</a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-8 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <a href="index.html" class="text-purple-400 text-sm hover:text-purple-300 mb-4 inline-block">&larr; Voltar para Trilha 3</a>
+      <div class="flex items-center space-x-3 mb-2">
+        <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-bold rounded">3.7</span>
+        <span class="text-neutral-500 text-sm">~20 min</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">🗜️ Prompt Compression e Variable Tags</h1>
+      <p class="text-neutral-400">Tecnicas para comprimir prompts e usar variaveis para customizacao rapida.</p>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- TOPICO 1 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">O que e Prompt Compression</h3>
+          <p class="text-neutral-400 text-sm">Menos tokens, mesma eficacia</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Conceito</h4>
+            <p class="text-neutral-300 text-sm">Prompt compression e condensar prompts longos em versoes menores sem perder eficacia. Menos tokens = mais rapido, mais barato, mais espaco para context.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Por que Comprimir</h4>
+            <ul class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-green-400">$</span>
+                <span>Custo menor por request</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-green-400">⚡</span>
+                <span>Latencia reduzida</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-green-400">📦</span>
+                <span>Mais espaco para conteudo</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-green-400">🎯</span>
+                <span>Menos ruido, mais foco</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Como Pedir Compressao</h4>
+            <div class="bg-dark-900 rounded p-3">
+              <code class="text-purple-300 text-xs">"Rewrite this prompt to be 50% shorter while maintaining all functionality and nuances. Output in markdown code block."</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 2 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Variable Tags Explicadas</h3>
+          <p class="text-neutral-400 text-sm">Placeholders para customizacao</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O que Sao</h4>
+            <p class="text-neutral-300 text-sm">Variable tags sao placeholders como {CUSTOMER_NAME}, {PRODUCT}, {TONE} que voce preenche antes de usar. Torna prompts reutilizaveis para diferentes contextos.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Sintaxe Comum</h4>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <div class="bg-dark-900 rounded p-2">
+                <span class="text-purple-400">{VARIABLE}</span>
+              </div>
+              <div class="bg-dark-900 rounded p-2">
+                <span class="text-purple-400">{{variable}}</span>
+              </div>
+              <div class="bg-dark-900 rounded p-2">
+                <span class="text-purple-400">[VARIABLE]</span>
+              </div>
+              <div class="bg-dark-900 rounded p-2">
+                <span class="text-purple-400">&lt;variable&gt;</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Exemplo de Uso</h4>
+            <div class="bg-dark-900 rounded p-3 text-xs">
+              <p class="text-purple-300 mb-2">Write an email to {CUSTOMER_NAME} about {TOPIC} in a {TONE} tone.</p>
+              <p class="text-neutral-400 mt-3">---</p>
+              <p class="text-neutral-400">CUSTOMER_NAME = Joao Silva</p>
+              <p class="text-neutral-400">TOPIC = renewal of contract</p>
+              <p class="text-neutral-400">TONE = professional but friendly</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 3 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Posicionamento de Variaveis</h3>
+          <p class="text-neutral-400 text-sm">Aproveitando o recency bias</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Recency Bias</h4>
+            <p class="text-neutral-300 text-sm">Modelos prestam mais atencao ao inicio e FIM do prompt. Variaveis no final recebem mais "atencao" durante processamento.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Estrutura Recomendada</h4>
+            <div class="bg-dark-900 rounded p-3 text-xs space-y-2">
+              <p class="text-purple-300">[CORPO DO PROMPT - instrucoes fixas]</p>
+              <p class="text-neutral-400">...</p>
+              <p class="text-neutral-400">...</p>
+              <p class="text-purple-300 mt-2">---</p>
+              <p class="text-purple-300">VARIABLES:</p>
+              <p class="text-neutral-400">CUSTOMER_NAME = valor</p>
+              <p class="text-neutral-400">TOPIC = valor</p>
+              <p class="text-neutral-400">SPECIAL_INSTRUCTIONS = valor</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Por que no Final</h4>
+            <ul class="text-neutral-300 text-sm space-y-1">
+              <li>• Recebe mais peso durante processamento</li>
+              <li>• Facil de encontrar e editar</li>
+              <li>• Nao quebra fluxo das instrucoes</li>
+              <li>• Compativel com automacao (append)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 4 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Easy to Customize</h3>
+          <p class="text-neutral-400 text-sm">Prompts que se adaptam facilmente</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Objetivo</h4>
+            <p class="text-neutral-300 text-sm">"Make prompts easy to customize and easy to change and evaluate." Variaveis permitem isso sem editar corpo do prompt.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Workflow de Uso</h4>
+            <ol class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">1.</span>
+                <span>Copie prompt template</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">2.</span>
+                <span>Va ate secao de variaveis</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">3.</span>
+                <span>Atualize apenas os valores</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">4.</span>
+                <span>Execute</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Automacao</h4>
+            <p class="text-neutral-300 text-sm">Em N8N/Make.com, variaveis podem ser preenchidas dinamicamente de outras fontes (CRM, forms, webhooks).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 5 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Unformatted Markdown</h3>
+          <p class="text-neutral-400 text-sm">Output limpo e copiavel</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">O Problema</h4>
+            <p class="text-neutral-300 text-sm">AI as vezes mistura texto formatado com code blocks, criando "spillover" que quebra copy/paste.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">A Solucao</h4>
+            <div class="bg-dark-900 rounded p-3">
+              <code class="text-purple-300 text-xs">"Output in unformatted markdown in a code block so I can easily copy-paste. No spillover between plain text and code blocks."</code>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Quando Usar</h4>
+            <ul class="text-neutral-300 text-sm space-y-1">
+              <li>• Gerando prompts para reusar</li>
+              <li>• Criando templates</li>
+              <li>• Exportando para outras ferramentas</li>
+              <li>• Sempre que precisar copiar output inteiro</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Dica Extra</h4>
+            <p class="text-neutral-300 text-sm">Adicione "I'm in a bit of a rush" no final. Faz AI pular explicacoes longas e ir direto ao output.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPICO 6 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <button onclick="toggleContent(this)" class="w-full p-6 text-left flex items-center space-x-4">
+        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold">Exercicio: Variaveis no seu Prompt</h3>
+          <p class="text-neutral-400 text-sm">Aplicacao pratica</p>
+        </div>
+        <span class="text-purple-400 text-2xl">+</span>
+      </button>
+      <div class="topic-content px-6 pb-6">
+        <div class="space-y-4">
+          <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">🔧 O Exercicio</h4>
+            <p class="text-neutral-300 text-sm">Pegue um prompt longo que voce usa e transforme-o em template com variaveis.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Passo a Passo</h4>
+            <ol class="text-neutral-300 text-sm space-y-2">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">1.</span>
+                <span>Identifique partes que mudam (nomes, topicos, tom)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">2.</span>
+                <span>Substitua por {VARIABLE_NAME}</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">3.</span>
+                <span>Crie secao VARIABLES no final</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">4.</span>
+                <span>Peca ao AI para comprimir 30-50%</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400 font-bold">5.</span>
+                <span>Teste com diferentes valores</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Variaveis Comuns</h4>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="bg-dark-900 rounded p-2 text-purple-300">{CUSTOMER_NAME}</div>
+              <div class="bg-dark-900 rounded p-2 text-purple-300">{COMPANY}</div>
+              <div class="bg-dark-900 rounded p-2 text-purple-300">{TOPIC}</div>
+              <div class="bg-dark-900 rounded p-2 text-purple-300">{TONE}</div>
+              <div class="bg-dark-900 rounded p-2 text-purple-300">{LENGTH}</div>
+              <div class="bg-dark-900 rounded p-2 text-purple-300">{CONTEXT}</div>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="text-purple-400 font-semibold mb-2">Resultado</h4>
+            <p class="text-neutral-300 text-sm">Prompt template reutilizavel que se adapta a qualquer situacao com mudanca minima. Pronto para automacao.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="flex justify-between items-center mt-8 pt-6 border-t border-dark-600">
+      <a href="modulo-3-6.html" class="text-neutral-400 hover:text-purple-400">&larr; Business Cases</a>
+      <a href="modulo-3-8.html" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg">Proximo: Workflow Completo &rarr;</a>
+    </div>
+  </main>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    function updateIcons() {
+      if (document.documentElement.classList.contains('dark')) {
+        lightIcon.classList.remove('hidden');
+        darkIcon.classList.add('hidden');
+      } else {
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+      }
+    }
+    if (localStorage.getItem('color-theme') === 'light') {
+      document.documentElement.classList.remove('dark');
+    }
+    updateIcons();
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      updateIcons();
+    });
+    function toggleContent(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('span:last-child');
+      content.classList.toggle('active');
+      icon.textContent = content.classList.contains('active') ? '−' : '+';
+    }
+  </script>
+</body>
+</html>
